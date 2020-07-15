@@ -13,19 +13,14 @@ namespace Assets.Scripts.Minecraft.Player
         public PlayerMovement movement;
 
         public int loadDistance = 1;
-        private byte mWheelScroll;
+        public byte mWheelScroll;
 
         public void Initialize(Guid _id, string _username)
         {
             id = _id;
             username = _username;
-            inventory = InventoryManager.LoadInventory(username);
+            inventory = InventoryManager.Get.LoadInventory(this);
             movement.Init(id);
-        }
-
-        private void FixedUpdate()
-        {
-            InventoryManager.Input(id, inventory, mWheelScroll);
         }
 
         /// <summary>Updates the player input with newly received input.</summary>
@@ -33,7 +28,7 @@ namespace Assets.Scripts.Minecraft.Player
         /// <param name="_rotation">The new rotation.</param>
         public void SetInput(bool[] _inputs, Quaternion _rotation, byte _mWheelScroll)
         {
-            movement.inputs = _inputs;
+            movement.SetInput(_inputs);
             transform.rotation = _rotation;
             mWheelScroll = _mWheelScroll;
         }
@@ -51,13 +46,15 @@ namespace Assets.Scripts.Minecraft.Player
             {
                 Vector3 pos = point + new Vector3(0.5f + UnityEngine.Random.Range(0, 0.1f), 0.15f, 0.5f + UnityEngine.Random.Range(0, 0.1f));
                 DroppedBlock.Instantiate(World.Get.GetBlock(point.x, point.y, point.z), pos);
-                World.Get.SetBlock(point.x, point.y, point.z, BlockType.Air);
+                World.Get.Interact(point.x, point.y, point.z, BlockType.Air);
             }
             else
             {
                 World.Get.SetBlock(point.x, point.y, point.z, inventory.HeldBlock);
                 if (PlayerCollider.AnyCollision())
                     World.Get.SetBlock(point.x, point.y, point.z, BlockType.Air);
+                else
+                    World.Get.Interact(point.x, point.y, point.z, inventory.HeldBlock);
             }
         }
 

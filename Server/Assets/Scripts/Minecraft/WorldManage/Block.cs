@@ -12,6 +12,9 @@ namespace Assets.Scripts.Minecraft.WorldManage
         Leave,
         Plank,
         Glass,
+        Torch,
+        Water,
+
         Count
     }
 
@@ -29,7 +32,9 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 { BlockType.Wood,   new Block(BlockType.Wood, true) },
                 { BlockType.Leave,  new Block(BlockType.Leave, true) },
                 { BlockType.Plank,  new Block(BlockType.Plank, true) },
-                { BlockType.Glass,  new Block(BlockType.Glass, true) }
+                { BlockType.Glass,  new Block(BlockType.Glass, true) },
+                { BlockType.Torch,  new Block(BlockType.Torch, false) },
+                { BlockType.Water,  new Block(BlockType.Water, false) },
             };
         }
 

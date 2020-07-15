@@ -10,19 +10,23 @@ using UnityEngine;
 
 namespace Assets.Minecraft
 {
-    class LoadedData
+    public class LoadedData
     {
         public readonly Vector3Int Pos;
         public readonly MeshBuilder WorldMesh;
         public readonly MeshBuilder FluidMesh;
         public readonly MeshBuilder FoliageMesh;
 
-        public LoadedData(Vector3Int pos, MeshBuilder worldMesh, MeshBuilder fluidMesh, MeshBuilder foliageMesh)
+        public readonly List<Vector3> LightPos;
+
+        public LoadedData(Vector3Int pos, MeshBuilder worldMesh, MeshBuilder fluidMesh, MeshBuilder foliageMesh, List<Vector3> lightPos)
         {
             Pos = pos;
             WorldMesh = worldMesh;
             FluidMesh = fluidMesh;
             FoliageMesh = foliageMesh;
+
+            LightPos = lightPos;
         }
     }
     class WorldLoader

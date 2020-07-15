@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Assets.Scripts.Minecraft.WorldManage;
+using System;
 using UnityEngine;
 
 namespace Assets.Minecraft
 {
-    class ChunkRenderer : MonoBehaviour
+    public class ChunkRenderer : MonoBehaviour
     {
         public Chunk chunk = null;
+        public ChunkSection section = null;
 
         public MeshFilter WorldMeshFilter = null;
         public MeshFilter FluidMeshFilter = null;

@@ -23,7 +23,7 @@ namespace Assets.Minecraft
         }
         public static Vector3Int ToChunkCoords(int x, int y, int z)
         {
-            return new Vector3Int(Mathf.FloorToInt(x / Settings.ChunkSize.x), Mathf.FloorToInt(y / Settings.ChunkSize.y), Mathf.FloorToInt(z / Settings.ChunkSize.z));
+            return new Vector3Int(Mathf.FloorToInt(x / Settings.ChunkSectionSize.x), Mathf.FloorToInt(y / Settings.ChunkSectionSize.y), Mathf.FloorToInt(z / Settings.ChunkSectionSize.z));
         }
         public static Vector2Int ToChunkCoords(this Vector3 pos)
         {

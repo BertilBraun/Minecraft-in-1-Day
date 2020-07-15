@@ -28,7 +28,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 return World.Get.GetBlock(absPos.x, absPos.y, absPos.z);
             }
             if (rely < 0 || rely >= Settings.ChunkSectionSize.y)
-                return parent.GetBlock(relx, rely * Settings.ChunkSectionSize.y * pos.y, relz);
+                return parent.GetBlock(relx, rely + Settings.ChunkSectionSize.y * pos.y, relz);
 
             return blocks[Util.ToLin(relx, rely, relz)];
         }
@@ -42,7 +42,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
             }
             if (rely < 0 || rely >= Settings.ChunkSectionSize.y)
             {
-                parent.SetBlock(relx, rely * Settings.ChunkSectionSize.y * pos.y, relz, type);
+                parent.SetBlock(relx, rely + Settings.ChunkSectionSize.y * pos.y, relz, type);
                 return;
             }
 

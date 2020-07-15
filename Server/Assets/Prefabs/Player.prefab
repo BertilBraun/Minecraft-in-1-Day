@@ -92,9 +92,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0346e0b4b233b840a6635657cfb00bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 8
-  gravity: -9.81
-  jumpForce: 1.5
+  speed: 6.4
+  gravity: -32.27
+  jumpForce: 10.64
   isFlying: 0
   inputs: 
 --- !u!1 &9053649895474806008

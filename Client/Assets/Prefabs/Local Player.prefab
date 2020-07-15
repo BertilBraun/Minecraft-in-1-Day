@@ -35,7 +35,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 14, y: -17}
-  m_SizeDelta: {x: 500, y: 200}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3084911956826759214
 CanvasRenderer:
@@ -310,6 +310,7 @@ GameObject:
   - component: {fileID: 2930563149530243624}
   - component: {fileID: 6776451196635289035}
   - component: {fileID: 3084911958509042028}
+  - component: {fileID: 1619812920248093742}
   m_Layer: 0
   m_Name: Local Player
   m_TagString: Player
@@ -432,6 +433,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 3084911956826759213}
+--- !u!114 &1619812920248093742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3084911958509042039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed0ad339d16abd49bd906c1949dee87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 2930563149530243624}
+  speed: 6.4
+  gravity: -32.27
+  jumpForce: 10.7
+  isGrounded: 0
+  yVel: 0
 --- !u!1 &3084911958527531405
 GameObject:
   m_ObjectHideFlags: 0

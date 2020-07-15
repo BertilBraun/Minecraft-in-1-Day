@@ -10,10 +10,9 @@ namespace Assets.Scripts.Minecraft.Player
         public float gravity = -9.81f;
         public float jumpForce = 1.5f;
 
-        [HideInInspector]
         public bool isFlying = false;
-        private bool isGrounded = false;
-        private float yVel = 0f;
+        public bool isGrounded = false;
+        public float yVel = 0f;
 
         public bool[] inputs;
         public Guid id;
@@ -32,11 +31,15 @@ namespace Assets.Scripts.Minecraft.Player
             inputs = new bool[8];
         }
 
+        public void SetInput(bool[] input)
+        {
+            inputs = input;
+        }
         /// <summary>Processes player input and moves the player.</summary>
         public void FixedUpdate()
         {
-            if (inputs[4])
-                isFlying = !isFlying;
+            if (true) // TODO Only if he is allowed to fly
+                isFlying = inputs[4];
 
             Vector2 inputDirection = Vector2.zero;
             if (inputs[0])
@@ -49,13 +52,13 @@ namespace Assets.Scripts.Minecraft.Player
                 inputDirection.x += 1;
 
 
-            if (!isFlying)
-                UpdateWalking(inputDirection);
-            else
+            if (isFlying)
                 UpdateFlying(inputDirection);
+            else
+                UpdateWalking(inputDirection);
 
             if (transform.position.y < -20)
-                transform.position = World.Get.GenerateSpawnPoint();
+                transform.position = World.Get.GenerateSpawnPoint(id);
 
             PacketSender.PlayerTransform(this);
         }
@@ -65,9 +68,9 @@ namespace Assets.Scripts.Minecraft.Player
             Vector3 updateVel = (transform.right * inputDirection.x + transform.forward * inputDirection.y) * speed * 2f;
 
             if (inputs[7])
-                updateVel += new Vector3(0f, -10f, 0f);
+                updateVel += new Vector3(0f, -3f, 0f);
             if (inputs[5])
-                updateVel += new Vector3(0f, 10f, 0f);
+                updateVel += new Vector3(0f, 3f, 0f);
 
             transform.position += updateVel;
         }

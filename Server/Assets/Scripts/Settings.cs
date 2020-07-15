@@ -4,7 +4,8 @@ namespace Assets.Scripts
 {
     class Settings
     {
-        public static float RenderDistance = 8;
+        // Of a Square surrounding the player with the player in the middle, the RenderDistance is the length of that square
+        public static float RenderDistance = 9;
 
         public static float DigDistance = 10;
 

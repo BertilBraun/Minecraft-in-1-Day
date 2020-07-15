@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
@@ -39,12 +40,16 @@ namespace Assets.Scripts.Minecraft.WorldManage
             Vector2Int c = Util.ToChunkCoords(x, z);
 
             GetChunk(c.x, c.y).SetBlock(x % Settings.ChunkSize.x, y, z % Settings.ChunkSize.z, type);
+        }
+        public void Interact(int x, int y, int z, BlockType type)
+        {
+            SetBlock(x, y, z, type);
             manager.UpdateChunk(x, y, z, type);
         }
 
-        public Vector3 GenerateSpawnPoint(int cx = 100, int cz = 100)
+        public Vector3 GenerateSpawnPoint(Guid id, int cx = 100, int cz = 100)
         {
-            GenerateChunk(cx, cz);
+            PacketSender.ChunkSend(id, GenerateChunk(cx, cz));
             return new Vector3(7.5f + cx * Settings.ChunkSize.x, GetChunk(cx, cz).HeightMap[7, 7] + 3, 7.5f + cz * Settings.ChunkSize.z);
         }
 
@@ -63,7 +68,6 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             terrainGenerator.GenerateTerrain(c);
             c.Generated = true;
-
             return c;
         }
 

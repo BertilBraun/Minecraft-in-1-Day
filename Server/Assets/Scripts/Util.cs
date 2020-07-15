@@ -2,6 +2,31 @@
 
 namespace Assets.Scripts
 {
+    public class ToggleKey
+    {
+        bool pressed = false;
+        System.Diagnostics.Stopwatch sw;
+        float timeToToggle;
+
+        public ToggleKey(float timeInSec)
+        {
+            sw = System.Diagnostics.Stopwatch.StartNew();
+            timeToToggle = timeInSec;
+        }
+
+        public bool Pressed {
+            get {
+                return pressed;
+            }
+            set {
+                if (value != pressed && sw.ElapsedMilliseconds / 1000f > timeToToggle)
+                {
+                    sw.Restart();
+                    pressed = value;
+                }
+            } }
+    }
+
     public static class Util
     {
         public static int ToLin(int x, int y, int z)

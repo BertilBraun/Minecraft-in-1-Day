@@ -64,25 +64,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
-    <Compile Include="Assets\Scripts\Look Over\HeightMap.cs" />
-    <Compile Include="Assets\Scripts\Look Over\ItemSpawner.cs" />
-    <Compile Include="Assets\Scripts\Look Over\PlayerCollider.cs" />
-    <Compile Include="Assets\Scripts\Look Over\Player_Look.cs" />
-    <Compile Include="Assets\Scripts\Look Over\Player_Movement.cs" />
-    <Compile Include="Assets\Scripts\Look Over\TerrainGenerator.cs" />
-    <Compile Include="Assets\Scripts\Look Over\UIManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\BlockInteractor.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\DroppedBlock.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\HeldItemDisplay.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\InfoDisplay.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\PlayerInteract.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Block.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\WorldManage\BlockMesh.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Chunk.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkRenderManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkRenderer.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkSection.cs" />
-    <Compile Include="Assets\Scripts\Minecraft\WorldManage\Direction.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\MeshBuilder.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\TextureAtlas.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\World.cs" />
@@ -92,8 +85,11 @@
     <Compile Include="Assets\Scripts\Networking\PacketHandler.cs" />
     <Compile Include="Assets\Scripts\Networking\PacketSender.cs" />
     <Compile Include="Assets\Scripts\Networking\ThreadManager.cs" />
+    <Compile Include="Assets\Scripts\OBJImporter.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerCollider.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerManager.cs" />
+    <Compile Include="Assets\Scripts\Player\PlayerMovementPrediction.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />
     <Compile Include="Assets\Scripts\Util.cs" />
     <Reference Include="UnityEngine">

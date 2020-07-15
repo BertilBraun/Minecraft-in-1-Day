@@ -14,9 +14,9 @@ namespace Assets.Minecraft
 
             for (int i = 0; i < 6; i++)
             {
-                if (i == (int)Direction.Up)
+                if (i == (int)BlockMesh.Up)
                     uvs[i] = GetUVs(idxUp);
-                else if (i == (int)Direction.Down)
+                else if (i == (int)BlockMesh.Down)
                     uvs[i] = GetUVs(idxDown);
                 else
                     uvs[i] = GetUVs(idxSides);
