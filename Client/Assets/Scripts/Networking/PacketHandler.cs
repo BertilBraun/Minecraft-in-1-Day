@@ -1,6 +1,7 @@
 ﻿using Assets.Minecraft;
 using Assets.Minecraft.Interactions;
 using Assets.Scripts.Minecraft.WorldManage;
+using Assets.Scripts.Player;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -81,6 +82,8 @@ public class PacketHandler
         GameManager.Get.SpawnPlayer(_id, _username, _position, _rotation);
     }
 
+    static float TimeOfLastSync = -2f;
+    static float TimeToSync = 0f; // TODO work on client side prediction
     public static void PlayerTransform(Packet _packet)
     {
         Guid _id = _packet.ReadGuid();
@@ -92,8 +95,19 @@ public class PacketHandler
         PlayerManager player = GameManager.Get.players[_id];
 
         if (player != GameManager.Get.localPlayerManager)
+        {
             player.transform.rotation = _rotation;
-        player.transform.position = _position;
+            player.transform.position = _position;
+        }
+        else
+        {
+            if (Time.time - TimeOfLastSync > TimeToSync)
+            {
+                TimeOfLastSync = Time.time;
+                player.transform.position = _position;
+                player.GetComponent<PlayerInput>().isFlying = _isFlying;
+            }
+        }
     }
 
     public static void PlayerDisconnected(Packet _packet)
@@ -150,7 +164,6 @@ public class PacketHandler
             if (section == null)
                 return;
 
-        Debug.Log("Received Chunk");
         loadingChunks.Remove(parentPos);
         ChunkManager.Get.AddChunk(parent);
     }

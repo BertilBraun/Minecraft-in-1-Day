@@ -10,12 +10,9 @@ namespace Assets.Minecraft
     {
         public static ChunkManager Get;
 
-        Dictionary<Vector2Int, Chunk> dict = new Dictionary<Vector2Int, Chunk>();
+        Dictionary<(int,int), Chunk> dict = new Dictionary<(int, int), Chunk>();
         List<ChunkSection> chunksToUpdate = new List<ChunkSection>();
         
-       // TODO rem Dictionary<Vector3Int, ChunkRenderer> chunksToUpdate = new Dictionary<Vector3Int, ChunkRenderer>();
-
-
         private void Awake()
         {
             if (Get == null)
@@ -48,79 +45,72 @@ namespace Assets.Minecraft
             var min = GameManager.Get.localPlayerTransform.position.ToChunkCoords() - renderDist;
             var max = GameManager.Get.localPlayerTransform.position.ToChunkCoords() + renderDist;
 
-            List<Vector2Int> toRemove = new List<Vector2Int>();
+            List<(int,int)> toRemove = new List<(int, int)>();
             foreach (var kv in dict)
-                if (min.x > kv.Key.x || min.y > kv.Key.y || max.y < kv.Key.y || max.x < kv.Key.x)
+                if (min.x > kv.Key.Item1 || min.y > kv.Key.Item2 || max.y < kv.Key.Item2 || max.x < kv.Key.Item1)
                     toRemove.Add(kv.Key);
 
             foreach (var key in toRemove)
             {
-                ChunkRenderManager.Get.RemoveChunk(key);
+                ChunkRenderManager.Get.RemoveChunk(key.Item1, key.Item2);
                 dict.Remove(key);
             }
         }
 
         public void AddChunk(Chunk c)
         {
-            dict[c.Pos] = c;
-
-            TryGen(c.Pos - new Vector2Int(-1,  0));
-            TryGen(c.Pos - new Vector2Int( 1,  0));
-            TryGen(c.Pos - new Vector2Int( 0, -1));
-            TryGen(c.Pos - new Vector2Int( 0,  1));
-
-            TryGen(c.Pos);
-        }
-
-        void TryGen(Vector2Int pos)
-        {
-            if (dict.ContainsKey(pos - new Vector2Int(-1, 0)) &&
-                dict.ContainsKey(pos - new Vector2Int(1, 0)) &&
-                dict.ContainsKey(pos - new Vector2Int(0, -1)) &&
-                dict.ContainsKey(pos - new Vector2Int(0, 1)))
-                // TODO - only if all surrounding ones have also loaded?
-                ChunkRenderManager.Get.AddChunk(dict[pos]);
+            dict.Add((c.Pos.x, c.Pos.y), c);
+            ChunkRenderManager.Get.AddChunk(c);
         }
 
         public Chunk GetChunk(int chunkx, int chunkz)
         {
-            Vector2Int key = new Vector2Int(chunkx, chunkz);
+            var key = (chunkx, chunkz);
             if (!dict.ContainsKey(key))
                 return null;
 
             return dict[key];
         }
 
+        public ChunkSection GetChunkSection(int x, int y, int z)
+        {
+            var chunkPos = new Vector3(x, y, z).ToChunkCoords();
+            var key = (chunkPos.x, chunkPos.y);
+            if (!dict.ContainsKey(key))
+                return null;
+
+            return dict[key].sections[y / Settings.ChunkSectionSize.y];
+        }
+
         public bool ChunkExists(int cx, int cz)
         {
-            return dict.ContainsKey(new Vector2Int(cx, cz));
+            return dict.ContainsKey((cx, cz));
         }
 
         public void UpdateChunk(int x, int y, int z)
         {
             Vector3Int c = Util.ToChunkCoords(x, y, z);
 
-            if (x % Settings.ChunkSize.x == 0)
+            if (x % Settings.ChunkSectionSize.x == 0)
                 _UpdateChunk(c.x - 1, c.y, c.z);
-            else if (x % Settings.ChunkSize.x == Settings.ChunkSize.x - 1)
+            else if (x % Settings.ChunkSectionSize.x == Settings.ChunkSectionSize.x - 1)
                 _UpdateChunk(c.x + 1, c.y, c.z);
 
-            if (y % Settings.ChunkSize.y == 0 && c.y != 0)
+            if (y % Settings.ChunkSectionSize.y == 0 && c.y != 0)
                 _UpdateChunk(c.x, c.y - 1, c.z);
-            else if (y % Settings.ChunkSize.y == Settings.ChunkSize.y - 1 && c.y != Settings.ChunkSectionsPerChunk - 1)
+            else if (y % Settings.ChunkSectionSize.y == Settings.ChunkSectionSize.y - 1 && c.y != Settings.ChunkSectionsPerChunk - 1)
                 _UpdateChunk(c.x, c.y + 1, c.z);
 
-            if (z % Settings.ChunkSize.z == 0)
+            if (z % Settings.ChunkSectionSize.z == 0)
                 _UpdateChunk(c.x, c.y, c.z - 1);
-            else if (z % Settings.ChunkSize.z == Settings.ChunkSize.z - 1)
+            else if (z % Settings.ChunkSectionSize.z == Settings.ChunkSectionSize.z - 1)
                 _UpdateChunk(c.x, c.y, c.z + 1);
 
             _UpdateChunk(c.x, c.y, c.z);
         }
-
         void _UpdateChunk(int cx, int cy, int cz)
         {
-            var key = new Vector2Int(cx, cz);
+            var key = (cx, cz);
             if (!dict.ContainsKey(key))
                 return;
 

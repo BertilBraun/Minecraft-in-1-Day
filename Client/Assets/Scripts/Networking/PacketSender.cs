@@ -25,17 +25,17 @@ public class PacketSender
 
     /// <summary>Sends player input to the server.</summary>
     /// <param name="_inputs"></param>
-    public static void PlayerInput(bool[] _inputs, byte mWheelInput)
+    public static void PlayerInput(InputData data)
     {
         using (Packet _packet = new Packet(ClientPackets.playerInput))
         {
-            _packet.Write(_inputs.Length);
-            foreach (bool _input in _inputs)
+            _packet.Write(data.inputs.Length);
+            foreach (bool _input in data.inputs)
             {
                 _packet.Write(_input);
             }
             _packet.Write(GameManager.Get.players[Client.Get.myId].transform.rotation);
-            _packet.Write(mWheelInput);
+            _packet.Write(data.mWheel);
 
             SendUDPData(_packet);
         }

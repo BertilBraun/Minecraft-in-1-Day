@@ -1,6 +1,5 @@
 ﻿using Assets.Minecraft;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
@@ -10,19 +9,25 @@ namespace Assets.Scripts.Minecraft.WorldManage
     {
         public struct Layer
         {
-            public int count;
+            int solids;
 
+            public void Set(BlockType type)
+            {
+                if (BlockDictionary.Get(type).Opaque)
+                    solids++;
+            }
             public void Update(BlockType type)
             {
-                count += BlockDictionary.Get(type).Opaque ? 1 : -1;
+                solids += BlockDictionary.Get(type).Opaque ? 1 : -1;
+                solids = Math.Max(solids, 0);
             }
             public bool IsSolid()
             {
-                return count == Settings.ChunkSize.x * Settings.ChunkSize.z;
+                return solids == Settings.ChunkSize.x * Settings.ChunkSize.z;
             }
             public bool IsEmpty()
             {
-                return count == 0;
+                return solids == 0;
             }
         }
 
@@ -49,7 +54,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 return World.Get.GetBlock(absPos.x, absPos.y, absPos.z);
             }
             if (rely < 0 || rely >= Settings.ChunkSectionSize.y)
-                return parent.GetBlock(relx, rely * Settings.ChunkSectionSize.y * Pos.y, relz);
+                return parent.GetBlock(relx, rely + Settings.ChunkSectionSize.y * Pos.y, relz);
 
             return blocks[Util.ToLin(relx, rely, relz)];
         }
@@ -63,7 +68,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
             }
             if (rely < 0 || rely >= Settings.ChunkSectionSize.y)
             {
-                parent.SetBlock(relx, rely * Settings.ChunkSectionSize.y * Pos.y, relz, type);
+                parent.SetBlock(relx, rely + Settings.ChunkSectionSize.y * Pos.y, relz, type);
                 return;
             }
 
@@ -74,13 +79,13 @@ namespace Assets.Scripts.Minecraft.WorldManage
         public bool IsLayerSolid(int y)
         {
             if (y < 0 || y >= Settings.ChunkSectionSize.y)
-                return parent.IsLayerSolid(y * Pos.y * Settings.ChunkSectionSize.y);
+                return parent.IsLayerSolid(y + Pos.y * Settings.ChunkSectionSize.y);
             return layers[y].IsSolid();
         }
         public bool IsLayerEmpty(int y)
         {
             if (y < 0 || y >= Settings.ChunkSectionSize.y)
-                return parent.IsLayerEmpty(y * Pos.y * Settings.ChunkSectionSize.y);
+                return parent.IsLayerEmpty(y + Pos.y * Settings.ChunkSectionSize.y);
             return layers[y].IsEmpty();
         }
 
@@ -145,7 +150,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
             for (int y = 0; y < Settings.ChunkSectionSize.y; y++)
                 for (int z = 0; z < Settings.ChunkSectionSize.z; z++)
                     for (int x = 0; x < Settings.ChunkSectionSize.x; x++)
-                        c.layers[y].Update(c.blocks[Util.ToLin(x, y, z)]);
+                        c.layers[y].Set(c.blocks[Util.ToLin(x, y, z)]);
 
             return c;
         }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Minecraft
 {
@@ -42,5 +43,12 @@ namespace Assets.Minecraft
             return ChunkManager.Get.GetChunk(cx, cz);
         }
 
+        public bool IsLayerSolid(int cx, int y, int cz)
+        {
+            Chunk c = ChunkManager.Get.GetChunk(cx, cz);
+            if (c == null)
+                return false;
+            return c.IsLayerSolid(y);
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Assets.Scripts;
+using Assets.Scripts.Minecraft.WorldManage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +19,10 @@ namespace Assets.Minecraft
         Leave,
         Plank,
         Glass,
+        Torch,
+        Water,
 
-        Count,
-
-
-        Water
+        Count
     }
 
     public class BlockDictionary
@@ -31,17 +32,16 @@ namespace Assets.Minecraft
         static void Init()
         {
             dict = new Dictionary<BlockType, Block> {
-                { BlockType.Air,    new Block(BlockType.Air, MeshType.Block, MeshOrder.World, 0, false, false) },
-                { BlockType.Dirt,   new Block(BlockType.Dirt, MeshType.Block, MeshOrder.World, 2, true, true) },
-                { BlockType.Grass,  new Block(BlockType.Grass, MeshType.Block, MeshOrder.World, 0, 2, 3, true, true) },
-                { BlockType.Stone,  new Block(BlockType.Stone, MeshType.Block, MeshOrder.World, 1, true, true) },
-                { BlockType.Wood,   new Block(BlockType.Wood, MeshType.Block, MeshOrder.World, 21, 21, 20, true, true) },
-                { BlockType.Leave,  new Block(BlockType.Leave, MeshType.Block, MeshOrder.World, 53, true, true) },
-                { BlockType.Plank,  new Block(BlockType.Plank, MeshType.Block, MeshOrder.World, 4, true, true) },
-                { BlockType.Glass,  new Block(BlockType.Glass, MeshType.Block, MeshOrder.World, 49, true, false) },
-               
-                
-                { BlockType.Water,  new Block(BlockType.Water, MeshType.Fluid, MeshOrder.Fluid, 0, false, false) },
+                { BlockType.Air,    new CodeMeshedBlock(BlockType.Air, MeshOrder.World, 0, false, false) },
+                { BlockType.Dirt,   new CodeMeshedBlock(BlockType.Dirt, MeshOrder.World, 2, true, true) },
+                { BlockType.Grass,  new CodeMeshedBlock(BlockType.Grass, MeshOrder.World, 0, 2, 3, true, true) },
+                { BlockType.Stone,  new CodeMeshedBlock(BlockType.Stone, MeshOrder.World, 1, true, true) },
+                { BlockType.Wood,   new CodeMeshedBlock(BlockType.Wood, MeshOrder.World, 21, 21, 20, true, true) },
+                { BlockType.Leave,  new CodeMeshedBlock(BlockType.Leave, MeshOrder.World, 53, true, true) },
+                { BlockType.Plank,  new CodeMeshedBlock(BlockType.Plank, MeshOrder.World, 4, true, true) },
+                { BlockType.Glass,  new CodeMeshedBlock(BlockType.Glass, MeshOrder.World, 49, true, false) },
+                { BlockType.Torch,  new LoadedMeshBlock(BlockType.Torch, MeshOrder.World, "Assets/Assets/cube.obj", false, false) },
+                { BlockType.Water,  new LoadedMeshBlock(BlockType.Water, MeshOrder.Fluid, "Assets/Assets/cube.obj", false, false) },
             };
         }
 
@@ -53,13 +53,6 @@ namespace Assets.Minecraft
         }
     }
 
-    public enum MeshType
-    {
-        Block,
-        Fluid,
-        X,
-    }
-
     public enum MeshOrder
     {
         World,
@@ -67,30 +60,95 @@ namespace Assets.Minecraft
         Foliage
     }
 
-    public class Block
+    public class CodeMeshedBlock : Block
+    {
+        public Vector2[][] UVs { get; private set; }
+
+        public CodeMeshedBlock(BlockType _type, MeshOrder _meshOrder, int AtlasIndex, bool _solid, bool _opaque) :
+            this(_type, _meshOrder, AtlasIndex, AtlasIndex, AtlasIndex, _solid, _opaque)
+        { }
+
+        public CodeMeshedBlock(BlockType _type, MeshOrder _meshOrder, int AtlasIndexUp, int AtlasIndexDown, int AtlasIndexSides, bool _solid, bool _opaque)
+            : base(_type, _meshOrder, _solid, _opaque)
+        {
+            UVs = TextureAtlas.GenerateUVs(AtlasIndexUp, AtlasIndexDown, AtlasIndexSides);
+        }
+
+        public override void Generate(MeshBuilder activeBuilder, Vector3Int pos, ChunkSection c)
+        {
+            TryAddFace(activeBuilder, pos, BlockMesh.Down, c);
+            TryAddFace(activeBuilder, pos, BlockMesh.Up, c);
+
+            TryAddFace(activeBuilder, pos, BlockMesh.East, c);
+            TryAddFace(activeBuilder, pos, BlockMesh.West, c);
+
+            TryAddFace(activeBuilder, pos, BlockMesh.South, c);
+            TryAddFace(activeBuilder, pos, BlockMesh.North, c);
+        }
+
+        void TryAddFace(MeshBuilder activeBuilder, Vector3Int pos, int dir, ChunkSection c)
+        {
+            if (ShouldMakeFace(pos, dir, c))
+                activeBuilder.AddQuad(pos, dir, UVs);
+        }
+
+        bool ShouldMakeFace(Vector3Int pos, int dir, ChunkSection c)
+        {
+            Vector3Int adj = pos - BlockMesh.Offset[dir];
+            BlockType adjBlock = BlockType.Air;
+            if (c != null)
+                adjBlock = c.GetBlock(adj.x, adj.y, adj.z);
+
+            if (Order == MeshOrder.Fluid && Type == adjBlock)
+                return false;
+
+            if (!BlockDictionary.Get(adjBlock).Opaque)
+                return true;
+
+            return false;
+        }
+
+    }
+
+    public class LoadedMeshBlock : Block
+    {
+        public Mesh mesh;
+
+        public LoadedMeshBlock(BlockType _type, MeshOrder _meshOrder, string _meshPath, bool _solid, bool _opaque)
+            : base(_type, _meshOrder, _solid, _opaque)
+        {
+            mesh = new OBJImporter().ImportFile(_meshPath);
+        }
+
+        public override void Generate(MeshBuilder activeBuilder, Vector3Int pos, ChunkSection c)
+        {
+            activeBuilder.AddData(mesh.vertices, mesh.normals, mesh.uv, mesh.triangles, mesh.triangles.Max() + 1);
+            Debug.Log("vertices " + mesh.vertices.Length);
+            Debug.Log("normals " + mesh.normals.Length);
+            Debug.Log("uv " + mesh.uv.Length);
+            Debug.Log("triangles" + mesh.triangles.Length);
+            Debug.Log("Max" + mesh.triangles.Max());
+        }
+    }
+
+    public abstract class Block
     {
         public BlockType Type { get; private set; }
-        public MeshType Mesh { get; private set; }
         public MeshOrder Order { get; private set; }
-        public Vector2[][] UVs { get; private set; }
 
         public bool Solid { get; private set; }
         public bool Opaque { get; private set; }
 
 
-        public Block(BlockType _type, MeshType _meshType, MeshOrder _meshOrder, int AtlasIndex, bool _solid, bool _opaque) :
-            this(_type, _meshType, _meshOrder, AtlasIndex, AtlasIndex, AtlasIndex, _solid, _opaque)
-        { }
-
-        public Block(BlockType _type, MeshType _meshType, MeshOrder _meshOrder, int AtlasIndexUp, int AtlasIndexDown, int AtlasIndexSides, bool _solid, bool _opaque)
+        public Block(BlockType _type, MeshOrder _meshOrder, bool _solid, bool _opaque)
         {
             Type = _type;
-            Mesh = _meshType;
             Order = _meshOrder;
             Solid = _solid;
             Opaque = _opaque;
-            UVs = TextureAtlas.GenerateUVs(AtlasIndexUp, AtlasIndexDown, AtlasIndexSides);
         }
+
+        public abstract void Generate(MeshBuilder activeBuilder, Vector3Int pos, ChunkSection c);
     }
 
 }

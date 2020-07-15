@@ -154,7 +154,6 @@ public class PacketSender
 
     public static void ChunkSend(Guid id, Chunk c)
     {
-        Debug.Log("Sending Chunk");
         foreach (var section in c.sections)
             using (Packet _packet = new Packet(ServerPackets.chunkSend))
             {

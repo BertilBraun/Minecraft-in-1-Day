@@ -1,5 +1,23 @@
-﻿using System;
+﻿using Assets.Scripts.Player;
+using System;
 using UnityEngine;
+
+public struct InputData
+{
+    public readonly bool[] inputs;
+    public readonly byte mWheel;
+
+    public InputData(bool init = false)
+    {
+        this.inputs = new bool[8] { false, false, false, false, false, false, false, false };
+        this.mWheel = 0;
+    }
+    public InputData(bool[] inputs, byte mWheel)
+    {
+        this.inputs = inputs;
+        this.mWheel = mWheel;
+    }
+}
 
 public class PlayerInput : MonoBehaviour
 {
@@ -9,7 +27,6 @@ public class PlayerInput : MonoBehaviour
     private float cameraVerticalRotation;
     private float playerHorizontalRotation;
 
-    [HideInInspector]
     public bool isFlying = false;
 
     void Start()
@@ -19,33 +36,35 @@ public class PlayerInput : MonoBehaviour
         playerHorizontalRotation = transform.eulerAngles.y;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-            SetCursor(!Cursor.visible);
-
-        if (Cursor.lockState == CursorLockMode.Locked)
-            Look();
-
         if (Input.GetKeyDown(KeyCode.F))
             isFlying = !isFlying;
 
-        bool[] _inputs = new bool[]
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SetCursor(!Cursor.visible);
+    }
+    private void FixedUpdate()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+            Look();
+
+        int scrollDeltaSign = Math.Sign(Input.mouseScrollDelta.y);
+        int mWheelInput = scrollDeltaSign < 0 ? 2 : scrollDeltaSign;
+
+        InputData data = new InputData(new bool[]
            {
             Input.GetKey(KeyCode.W),
             Input.GetKey(KeyCode.S),
             Input.GetKey(KeyCode.A),
             Input.GetKey(KeyCode.D),
-            Input.GetKeyDown(KeyCode.F),
+            isFlying,
             Input.GetKey(KeyCode.Space),
             Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift),
             Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)
-           };
+           }, (byte)mWheelInput);
 
-        int scrollDeltaSign = Math.Sign(Input.mouseScrollDelta.y);
-        int mWheelInput = scrollDeltaSign < 0 ? 2 : scrollDeltaSign;
-
-        PacketSender.PlayerInput(_inputs, (byte)mWheelInput);
+        PacketSender.PlayerInput(data);
     }
     
     // TODO Rotation might not work because of player/camera parenting

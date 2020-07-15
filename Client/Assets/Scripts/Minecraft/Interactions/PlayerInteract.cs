@@ -8,16 +8,11 @@ namespace Assets.Minecraft.Interactions
         {
             if (Input.GetMouseButtonDown(0))
                 if (BlockInteractor.Get.HasUpdated)
-                    PacketSender.PlayerInteract(BlockInteractor.Get.HitPointPlus, true);
+                    PacketSender.PlayerInteract(BlockInteractor.Get.hitPointPlus, true);
 
             if (Input.GetMouseButtonDown(1))
                 if (BlockInteractor.Get.HasUpdated)
-                    PacketSender.PlayerInteract(BlockInteractor.Get.HitPointMinus, false);
-
-            if (Input.GetMouseButtonDown(0))
-                PacketSender.PlayerInteract(transform.position + Vector3.one * 2, true);
-            if (Input.GetMouseButtonDown(1))
-                PacketSender.PlayerInteract(transform.position + Vector3.one * 2, false);
+                    PacketSender.PlayerInteract(BlockInteractor.Get.hitPointMinus, false);
         }
     }
 }

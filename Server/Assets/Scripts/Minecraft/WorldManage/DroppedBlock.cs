@@ -14,7 +14,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         {
             if (other.tag == "Player")
             {
-                InventoryManager.PickUp(other.gameObject, type);
+                InventoryManager.Get.PickUp(other.GetComponent<PlayerHandler>(), type);
                 Destroy(ID);
             }
         }

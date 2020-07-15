@@ -1,36 +1,58 @@
 ﻿using Assets.Scripts.Minecraft.WorldManage;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.Player
 {
-    public class InventoryManager
+    public class InventoryManager : MonoBehaviour
     {
-        static public void PickUp(GameObject player, BlockType type)
+        public static InventoryManager Get;
+
+        Dictionary<PlayerHandler, Inventory> inventories = new Dictionary<PlayerHandler, Inventory>();
+
+        private void Awake()
+        {
+            if (Get == null)
+                Get = this;
+            else if (Get != this)
+            {
+                Debug.Log("Instance already exists, destroying object!");
+                Destroy(this);
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            foreach (var kv in inventories)
+                Input(kv.Key, kv.Value);
+        }
+
+        public void PickUp(PlayerHandler player, BlockType type)
         {
             Debug.Log("Picked Up: " + type);
         }
-
-        public static Inventory LoadInventory(string username)
+        public void Input(PlayerHandler player, Inventory inv)
         {
-            return new Inventory();
-        }
-        public static void Input(Guid id, Inventory inv, byte mWheelInput)
-        {
-            if (mWheelInput != 0)
+            if (player.mWheelScroll != 0)
             {
                 bool HeldBlockChanged = true;
 
-                if (mWheelInput == 1 && inv.HeldBlock != BlockType.Count - 1)
+                if (player.mWheelScroll == 1 && inv.HeldBlock != BlockType.Count - 1)
                     inv.HeldBlock++;
-                else if (mWheelInput == 2 && inv.HeldBlock != BlockType.Air + 1)
+                else if (player.mWheelScroll == 2 && inv.HeldBlock != BlockType.Air + 1)
                     inv.HeldBlock--;
                 else
                     HeldBlockChanged = false;
 
                 if (HeldBlockChanged)
-                    PacketSender.HeldItemChanged(id, inv.HeldBlock);
+                    PacketSender.HeldItemChanged(player.id, inv.HeldBlock);
             }
+        }
+        public Inventory LoadInventory(PlayerHandler player)
+        {
+            inventories.Add(player, new Inventory());
+            return inventories[player];
         }
     }
 }

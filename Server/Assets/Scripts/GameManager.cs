@@ -34,7 +34,7 @@ namespace Assets.Scripts
             // TODO only for testing purpose PacketSender.TestPacket(id);
 
             Players.Add(id, player);
-            player.transform.position = World.Get.GenerateSpawnPoint();
+            player.transform.position = World.Get.GenerateSpawnPoint(id);
             Debug.Log("Added Player at Position: " + player.transform.position);
         }
 

@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\Admin\UsernameDatabase.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\Inventory.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\InventoryManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\PlayerCollider.cs" />

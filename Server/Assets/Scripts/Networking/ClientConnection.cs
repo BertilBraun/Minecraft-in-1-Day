@@ -213,7 +213,7 @@ public class ClientConnection
     public void SendIntoGame(string _playerName)
     {
         PlayerHandler player = GameManager.Get.InstantiatePlayer();
-        player.Initialize(id, _playerName);
+        player.Initialize(id, _playerName); // TODO update ID to match the Database
 
         // Send all players to the new player
         foreach (PlayerHandler p in GameManager.Get.Players.Values)
