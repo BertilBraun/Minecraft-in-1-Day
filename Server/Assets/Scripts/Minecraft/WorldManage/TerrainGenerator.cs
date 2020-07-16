@@ -1,5 +1,10 @@
 ﻿namespace Assets.Scripts.Minecraft.WorldManage
 {
+    class TerrainSetting
+    {
+        public static int waterLvl = 60;
+    }
+
     public class TerrainGenerator
     {
         System.Random rand = new System.Random();
@@ -27,13 +32,17 @@
                 {
                     int h = c.HeightMap[x, z];
                     for (int y = 0; y <= h; y++)
-                        if (y == h)
+                        if (y == h && y <= TerrainSetting.waterLvl + 2)
+                            c.SetBlock(x, y, z, BlockType.Sand);
+                        else if (y == h)
                             c.SetBlock(x, y, z, BlockType.Grass);
                         else if (y > h - 2)
                             c.SetBlock(x, y, z, BlockType.Dirt);
                         else
                             c.SetBlock(x, y, z, BlockType.Stone);
 
+                    for (int y = h + 1; y <= TerrainSetting.waterLvl; y++)
+                        c.SetBlock(x, y, z, BlockType.Water);
                 }
         }
 
@@ -42,7 +51,7 @@
             for (int z = 0; z < Settings.ChunkSize.z; z++)
                 for (int x = 0; x < Settings.ChunkSize.x; x++)
                 {
-                    if (rand.Next(0, 300) == 0)
+                    if (rand.Next(0, 300) == 0 && c.HeightMap[x, z] > TerrainSetting.waterLvl + 3)
                         Tree(x, z);
                 }
         }

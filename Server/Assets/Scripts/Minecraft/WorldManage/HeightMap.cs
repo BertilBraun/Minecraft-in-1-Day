@@ -1,10 +1,14 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
+    [Serializable]
     public class HeightMap
     {
+        [SerializeField]
         int[] Map;
+        [SerializeField]
         Vector2Int pos;
 
         public HeightMap(Vector2Int _pos)
@@ -24,10 +28,10 @@ namespace Assets.Scripts.Minecraft.WorldManage
             for (int z = 0; z < Settings.ChunkSize.z; z++)
                 for (int x = 0; x < Settings.ChunkSize.x; x++)
                 {
-                    float val = Sample(100f, x, z) * 5f + Sample(30f, x, z) * 2f + Sample(15f, x, z) + Sample(1f, x, z);
+                    float val = Sample(100f, x, z) * 3f + Sample(30f, x, z) * 3f + Sample(15f, x, z) + Sample(1f, x, z);
 
-                    val *= 20f;
-                    val += 50f;
+                    val *= 10f;
+                    val += 40f;
 
                     Map[x + (Settings.ChunkSize.x * z)] = (int)val;
                 }

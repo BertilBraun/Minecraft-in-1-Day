@@ -1,23 +1,24 @@
 ﻿using Assets.Scripts.Minecraft.WorldManage;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Minecraft
 {
+    [Serializable]
     public class LoadedData
     {
-        public readonly Vector3Int Pos;
-        public readonly MeshBuilder WorldMesh;
-        public readonly MeshBuilder FluidMesh;
-        public readonly MeshBuilder FoliageMesh;
+        [SerializeField]
+        public Vector3Int Pos;
+        [SerializeField]
+        public MeshBuilder WorldMesh;
+        [SerializeField]
+        public MeshBuilder FluidMesh;
+        [SerializeField]
+        public MeshBuilder FoliageMesh;
 
-        public readonly List<Vector3> LightPos;
+        public List<Vector3> LightPos;
 
         public LoadedData(Vector3Int pos, MeshBuilder worldMesh, MeshBuilder fluidMesh, MeshBuilder foliageMesh, List<Vector3> lightPos)
         {

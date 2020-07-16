@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Minecraft.WorldManage;
 using System;
+using System.IO;
 using UnityEngine;
 
 namespace Assets.Minecraft
@@ -20,6 +21,14 @@ namespace Assets.Minecraft
             FoliageMeshFilter.mesh = data.FoliageMesh.ToMesh();
 
             chunk.Meshed = true;
+
+            var pos = section.Pos;
+            if (pos.x > 97 && pos.x < 102 && pos.z > 98 && pos.z < 104 && WorldMeshFilter.mesh.vertices.Length > 0 && pos.y > 0)
+            {
+                string path = "Assets/Chunks/" + pos.ToString() + ".dat";
+                //File.WriteAllText(path, JsonUtility.ToJson(data, true));
+            }
+
         }
     }
 }

@@ -68,44 +68,44 @@ namespace Assets.Minecraft
         };
     }
 
-    public class TorchMesh
+    public class FluidMesh
     {
         public static Vector3[][] Vertices = new Vector3[6][]
-                {
+        {
             new Vector3[4]
             {
                 new Vector3(1, 0, 0),
                 new Vector3(0, 0, 0),
-                new Vector3(0, 1, 0),
-                new Vector3(1, 1, 0)
+                new Vector3(0, 0.9f, 0),
+                new Vector3(1, 0.9f, 0)
             },
             new Vector3[4]
             {
                 new Vector3(1, 0, 1),
                 new Vector3(1, 0, 0),
-                new Vector3(1, 1, 0),
-                new Vector3(1, 1, 1)
+                new Vector3(1, 0.9f, 0),
+                new Vector3(1, 0.9f, 1)
             },
             new Vector3[4]
             {
-                new Vector3(0, 1, 1),
-                new Vector3(1, 1, 1),
-                new Vector3(1, 1, 0),
-                new Vector3(0, 1, 0)
+                new Vector3(0, 0.9f, 1),
+                new Vector3(1, 0.9f, 1),
+                new Vector3(1, 0.9f, 0),
+                new Vector3(0, 0.9f, 0)
             },
             new Vector3[4]
             {
                 new Vector3(0, 0, 1),
                 new Vector3(1, 0, 1),
-                new Vector3(1, 1, 1),
-                new Vector3(0, 1, 1)
+                new Vector3(1, 0.9f, 1),
+                new Vector3(0, 0.9f, 1)
             },
             new Vector3[4]
             {
                 new Vector3(0, 0, 0),
                 new Vector3(0, 0, 1),
-                new Vector3(0, 1, 1),
-                new Vector3(0, 1, 0)
+                new Vector3(0, 0.9f, 1),
+                new Vector3(0, 0.9f, 0)
             },
             new Vector3[4]
             {
@@ -114,15 +114,6 @@ namespace Assets.Minecraft
                 new Vector3(1, 0, 1),
                 new Vector3(0, 0, 1)
             },
-                };
-        public static Vector3[] Normals = new Vector3[6]
-        {
-            new Vector3Int( 0,  0,  1),
-            new Vector3Int(-1,  0,  0),
-            new Vector3Int( 0, -1,  0),
-            new Vector3Int( 0,  0, -1),
-            new Vector3Int( 1,  0,  0),
-            new Vector3Int( 0,  1,  0),
         };
     }
 }

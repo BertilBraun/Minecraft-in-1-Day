@@ -13,7 +13,7 @@ namespace Assets.Scripts.Minecraft.Player
         public PlayerMovement movement;
 
         public int loadDistance = 1;
-        public byte mWheelScroll;
+        public int mWheelScroll;
 
         public void Initialize(Guid _id, string _username)
         {
@@ -26,7 +26,7 @@ namespace Assets.Scripts.Minecraft.Player
         /// <summary>Updates the player input with newly received input.</summary>
         /// <param name="_inputs">The new key inputs.</param>
         /// <param name="_rotation">The new rotation.</param>
-        public void SetInput(bool[] _inputs, Quaternion _rotation, byte _mWheelScroll)
+        public void SetInput(bool[] _inputs, Quaternion _rotation, int _mWheelScroll)
         {
             movement.SetInput(_inputs);
             transform.rotation = _rotation;

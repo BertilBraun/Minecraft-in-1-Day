@@ -4,6 +4,8 @@ namespace Assets
 {
     class Settings
     {
+        public static string username = "Debug";
+
         public static float TexturesPerRow = 16;
         public static float BlockTextureSize = 16;
         public static float TextureSize = BlockTextureSize * TexturesPerRow;

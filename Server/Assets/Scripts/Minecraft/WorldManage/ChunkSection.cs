@@ -5,13 +5,16 @@ using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
+    [Serializable]
     public class ChunkSection
     {
-        public bool HasChanged { get; private set; }
-
+        [SerializeField]
         Vector3Int pos;
+        [SerializeField]
         BlockType[] blocks;
-        Chunk parent;
+
+        [NonSerialized]
+        public Chunk parent;
 
         public ChunkSection(Vector3Int _pos, Chunk _parent)
         {
@@ -48,7 +51,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             blocks[Util.ToLin(relx, rely, relz)] = type;
             if (changeHasChanged)
-                HasChanged = true;
+                parent.HasChanged = true;
         }
 
         bool OutsideBounds(int x, int z)

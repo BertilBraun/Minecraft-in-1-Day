@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuChunkRenderer.cs" />
+    <Compile Include="Assets\Scripts\Menu\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\BlockInteractor.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\DroppedBlock.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\HeldItemDisplay.cs" />
@@ -71,6 +73,7 @@
     <Compile Include="Assets\Scripts\Minecraft\Interactions\PlayerInteract.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Block.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\BlockMesh.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\WorldManage\BlockMeshingManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Chunk.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkRenderManager.cs" />
@@ -85,11 +88,11 @@
     <Compile Include="Assets\Scripts\Networking\PacketHandler.cs" />
     <Compile Include="Assets\Scripts\Networking\PacketSender.cs" />
     <Compile Include="Assets\Scripts\Networking\ThreadManager.cs" />
-    <Compile Include="Assets\Scripts\OBJImporter.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCollider.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerInput.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovementPrediction.cs" />
+    <Compile Include="Assets\Scripts\Player\WaterPostProcessing.cs" />
     <Compile Include="Assets\Scripts\Settings.cs" />
     <Compile Include="Assets\Scripts\Util.cs" />
     <Reference Include="UnityEngine">

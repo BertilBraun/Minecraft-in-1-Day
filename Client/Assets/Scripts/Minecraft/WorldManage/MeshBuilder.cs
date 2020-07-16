@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Minecraft.WorldManage;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,6 @@ namespace Assets.Minecraft
     class ChunkMeshBuilder
     {
         ChunkSection c = null;
-        MeshBuilder activeBuilder = null;
         MeshBuilder WorldMeshBuilder, FluidMeshBuilder, FoliageMeshBuilder;
         List<Vector3> lightPos;
 
@@ -50,7 +50,7 @@ namespace Assets.Minecraft
 
         bool ShouldCheckLayer(int y)
         {
-            return !(c.IsLayerEmpty(y) ||
+            return !(//c.IsLayerEmpty(y) ||
                     (c.IsLayerSolid(y) &&
                     c.IsLayerSolid(y - 1) &&
                     c.IsLayerSolid(y + 1) &&
@@ -88,30 +88,36 @@ namespace Assets.Minecraft
             return builder.ToMesh();
         }
     }
+
+    [Serializable]
     public class MeshBuilder
     {
+        [SerializeField]
         List<Vector3> vertices = new List<Vector3>();
+        [SerializeField]
         List<Vector3> normals = new List<Vector3>();
+        [SerializeField]
         List<Vector2> uv = new List<Vector2>();
+        [SerializeField]
         List<int> triangles = new List<int>();
+        [NonSerialized]
         int idx = 0;
 
-        Vector3[] GetVertices(Vector3Int pos, int dir, int w, int h)
+        Vector3[] GetVertices(Vector3[][] vertices, Vector3 pos, int dir)
         {
-            var verts = (Vector3[])BlockMesh.Vertices[dir].Clone();
-
+            var verts = (Vector3[])vertices[dir].Clone();
             for (int i = 0; i < verts.Length; i++)
                 verts[i] += pos;
             return verts;
         }
 
-        public void AddQuad(Vector3Int pos, int dir, Vector2[][] uvs, int w = 1, int h = 1)
+        public void AddQuad(Vector3[][] vertices, Vector3 pos, int dir, Vector2[][] uvs, float w = 1, float h = 1)
         {
             Vector3[] normals = new Vector3[4] {
                 -BlockMesh.Offset[dir], -BlockMesh.Offset[dir], -BlockMesh.Offset[dir], -BlockMesh.Offset[dir]
             };
 
-            AddData(GetVertices(pos, dir, w, h), normals, uvs[dir], new int[] { 0, 1, 2, 2, 3, 0 }, 4);
+            AddData(GetVertices(vertices, pos, dir), normals, uvs[dir], new int[] { 0, 1, 2, 2, 3, 0 }, 4);
         }
 
         public void AddData(Vector3[] _vertices, Vector3[] _normals, Vector2[] _uv, int[] indecies, int idxcount)

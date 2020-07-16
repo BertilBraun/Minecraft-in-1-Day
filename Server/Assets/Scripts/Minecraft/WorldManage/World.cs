@@ -35,15 +35,15 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             return GetChunk(c.x, c.y).GetBlock(x % Settings.ChunkSize.x, y, z % Settings.ChunkSize.z);
         }
-        public void SetBlock(int x, int y, int z, BlockType type)
+        public void SetBlock(int x, int y, int z, BlockType type, bool changeHasChanged = false)
         {
             Vector2Int c = Util.ToChunkCoords(x, z);
 
-            GetChunk(c.x, c.y).SetBlock(x % Settings.ChunkSize.x, y, z % Settings.ChunkSize.z, type);
+            GetChunk(c.x, c.y).SetBlock(x % Settings.ChunkSize.x, y, z % Settings.ChunkSize.z, type, changeHasChanged);
         }
         public void Interact(int x, int y, int z, BlockType type)
         {
-            SetBlock(x, y, z, type);
+            SetBlock(x, y, z, type, true);
             manager.UpdateChunk(x, y, z, type);
         }
 
