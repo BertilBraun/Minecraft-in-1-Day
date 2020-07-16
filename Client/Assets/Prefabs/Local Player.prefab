@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_RenderPostProcessing: 1
-  m_Antialiasing: 0
+  m_Antialiasing: 1
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 0
@@ -407,7 +407,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mouseSensitivity: 100
   cameraTransform: {fileID: 3084911957874789982}
-  isFlying: 0
 --- !u!114 &6776451196635289035
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,6 +432,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   infoText: {fileID: 3084911956826759213}
+  heldItem: {fileID: 3084911958527531394}
 --- !u!114 &1619812920248093742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +449,7 @@ MonoBehaviour:
   speed: 6.4
   gravity: -32.27
   jumpForce: 10.7
+  isFlying: 0
   isGrounded: 0
   yVel: 0
 --- !u!1 &3084911958527531405
@@ -544,6 +545,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 3084911958527531393}
+  HeldBlock: 0
 --- !u!1 &3084911958558864836
 GameObject:
   m_ObjectHideFlags: 0

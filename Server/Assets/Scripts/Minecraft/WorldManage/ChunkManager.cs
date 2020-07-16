@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Minecraft.Player;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
@@ -19,6 +20,12 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 AddChunks(player);
 
             RemoveChunks();
+        }
+
+        private void OnApplicationQuit()
+        {
+            foreach (Chunk chunk in dict.Values)
+                chunk.Save();
         }
 
         bool PlayerInRangeOfChunk(Vector3 playerPos, int cx, int cz)
@@ -40,7 +47,12 @@ namespace Assets.Scripts.Minecraft.WorldManage
                     for (int z = cam.y - i; z <= cam.y + i; z++)
                         if (!GetChunk(x, z).Generated)
                         {
-                            PacketSender.ChunkSend(player.id, World.Get.GenerateChunk(x, z));
+                            Chunk c = Chunk.Load(new Vector2Int(x, z));
+                            if (c == null)
+                                c = World.Get.GenerateChunk(x, z);
+                            else
+                                AddChunk(c);
+                            PacketSender.ChunkSend(player.id, c);
                             return;
                         }
 
@@ -66,7 +78,10 @@ namespace Assets.Scripts.Minecraft.WorldManage
             }
 
             foreach (Vector2Int key in toDestroy)
+            {
+                dict[key].Save();
                 dict.Remove(key);
+            }
         }
 
         public Chunk AddChunk(int x, int z)
@@ -80,6 +95,11 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             dict.Add(key, chunk);
             return chunk;
+        }
+
+        public void AddChunk(Chunk c)
+        {
+            dict[c.Pos] = c;
         }
 
         public Chunk GetChunk(int chunkx, int chunkz)

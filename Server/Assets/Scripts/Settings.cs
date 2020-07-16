@@ -4,6 +4,9 @@ namespace Assets.Scripts
 {
     class Settings
     {
+        public static string saveFolder = "Saves/Chunks/";
+
+
         // Of a Square surrounding the player with the player in the middle, the RenderDistance is the length of that square
         public static float RenderDistance = 9;
 

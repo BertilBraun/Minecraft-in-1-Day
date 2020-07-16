@@ -38,15 +38,16 @@ namespace Assets.Scripts.Minecraft.Player
             {
                 bool HeldBlockChanged = true;
 
-                if (player.mWheelScroll == 1 && inv.HeldBlock != BlockType.Count - 1)
+                if (player.mWheelScroll > 0 && inv.HeldBlock != BlockType.Count - 1)
                     inv.HeldBlock++;
-                else if (player.mWheelScroll == 2 && inv.HeldBlock != BlockType.Air + 1)
+                else if (player.mWheelScroll < 0 && inv.HeldBlock != BlockType.Air + 1)
                     inv.HeldBlock--;
                 else
                     HeldBlockChanged = false;
 
                 if (HeldBlockChanged)
                     PacketSender.HeldItemChanged(player.id, inv.HeldBlock);
+                player.mWheelScroll = 0;
             }
         }
         public Inventory LoadInventory(PlayerHandler player)

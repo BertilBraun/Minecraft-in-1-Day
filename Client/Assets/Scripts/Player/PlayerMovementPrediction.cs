@@ -10,6 +10,7 @@ namespace Assets.Scripts.Player
         public float gravity = -9.81f;
         public float jumpForce = 1.5f;
 
+        public bool isFlying = false;
         public bool isGrounded = false;
         public float yVel = 0f;
 
@@ -23,7 +24,7 @@ namespace Assets.Scripts.Player
         public void FixedUpdate()
         {
             return; // TODO work on client side prediction
-            if (input.isFlying)
+            if (isFlying)
                 UpdateFlying();
             else
                 UpdateWalking();

@@ -140,18 +140,6 @@ public class PacketSender
         }
     }
 
-    public static void ChunkSend(Guid id, ChunkSection section)
-    {
-        Debug.Log("Sending Chunk Section");
-        using (Packet _packet = new Packet(ServerPackets.chunkSend))
-        {
-            _packet.Write(DateTime.Now.Millisecond);
-            _packet.Write(section.Encode());
-
-            SendTCPData(id, _packet);
-        }
-    }
-
     public static void ChunkSend(Guid id, Chunk c)
     {
         foreach (var section in c.sections)

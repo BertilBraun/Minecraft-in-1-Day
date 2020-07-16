@@ -105,7 +105,7 @@ public class PacketHandler
             {
                 TimeOfLastSync = Time.time;
                 player.transform.position = _position;
-                player.GetComponent<PlayerInput>().isFlying = _isFlying;
+                player.GetComponent<PlayerMovementPrediction>().isFlying = _isFlying;
             }
         }
     }

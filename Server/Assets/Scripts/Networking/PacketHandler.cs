@@ -41,7 +41,7 @@ public class PacketHandler
             _inputs[i] = _packet.ReadBool();
         }
         Quaternion _rotation = _packet.ReadQuaternion();
-        byte mWheelScroll = _packet.ReadByte();
+        int mWheelScroll = _packet.ReadInt();
 
         GameManager.Get.Players[_fromClient].SetInput(_inputs, _rotation, mWheelScroll);
     }

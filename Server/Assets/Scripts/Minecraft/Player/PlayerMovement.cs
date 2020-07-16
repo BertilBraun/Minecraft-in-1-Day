@@ -34,13 +34,13 @@ namespace Assets.Scripts.Minecraft.Player
         public void SetInput(bool[] input)
         {
             inputs = input;
+
+            if (inputs[4] && true) // TODO Only if he is allowed to fly
+                isFlying = !isFlying;
         }
         /// <summary>Processes player input and moves the player.</summary>
         public void FixedUpdate()
         {
-            if (true) // TODO Only if he is allowed to fly
-                isFlying = inputs[4];
-
             Vector2 inputDirection = Vector2.zero;
             if (inputs[0])
                 inputDirection.y += 1;

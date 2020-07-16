@@ -7,6 +7,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         Air,
         Dirt,
         Grass,
+        Sand,
         Stone,
         Wood,
         Leave,
@@ -14,6 +15,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         Glass,
         Torch,
         Water,
+        //Stair,
 
         Count
     }
@@ -28,6 +30,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 { BlockType.Air,    new Block(BlockType.Air, false) },
                 { BlockType.Dirt,   new Block(BlockType.Dirt, true) },
                 { BlockType.Grass,  new Block(BlockType.Grass, true) },
+                { BlockType.Sand,  new Block(BlockType.Sand, true) },
                 { BlockType.Stone,  new Block(BlockType.Stone, true) },
                 { BlockType.Wood,   new Block(BlockType.Wood, true) },
                 { BlockType.Leave,  new Block(BlockType.Leave, true) },
@@ -35,6 +38,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 { BlockType.Glass,  new Block(BlockType.Glass, true) },
                 { BlockType.Torch,  new Block(BlockType.Torch, false) },
                 { BlockType.Water,  new Block(BlockType.Water, false) },
+                //{ BlockType.Stair,  new Block(BlockType.Stair, true) },
             };
         }
 

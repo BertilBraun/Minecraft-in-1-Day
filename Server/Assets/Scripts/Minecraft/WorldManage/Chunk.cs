@@ -5,12 +5,19 @@ using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
+    [Serializable]
     public class Chunk
     {
-        public Vector2Int Pos { get; private set; }
-        public bool Generated { get; set; }
-        public HeightMap HeightMap { get; private set; }
-        public readonly ChunkSection[] sections;
+        [SerializeField]
+        public bool HasChanged;
+        [SerializeField]
+        public Vector2Int Pos;
+        [SerializeField]
+        public bool Generated;
+        [SerializeField]
+        public HeightMap HeightMap;
+        [SerializeField]
+        public ChunkSection[] sections;
 
         public Chunk(Vector2Int pos)
         {
@@ -34,18 +41,18 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             return GetSection(rely).GetBlock(relx, rely % Settings.ChunkSectionSize.y, relz);
         }
-        public void SetBlock(int relx, int rely, int relz, BlockType type)
+        public void SetBlock(int relx, int rely, int relz, BlockType type, bool changeHasChanged = false)
         {
             if (OutsideBounds(relx, relz))
             {
                 Vector3Int absPos = new Vector3Int(relx, rely, relz) + new Vector3Int(Settings.ChunkSize.x * Pos.x, Settings.ChunkSize.y, Settings.ChunkSize.z * Pos.y);
-                World.Get.SetBlock(absPos.x, absPos.y, absPos.z, type);
+                World.Get.SetBlock(absPos.x, absPos.y, absPos.z, type, changeHasChanged);
                 return;
             }
             if (rely < 0 || rely >= Settings.ChunkSize.y)
                 return;
 
-            GetSection(rely).SetBlock(relx, rely % Settings.ChunkSectionSize.y, relz, type);
+            GetSection(rely).SetBlock(relx, rely % Settings.ChunkSectionSize.y, relz, type, changeHasChanged);
         }
 
         ChunkSection GetSection(int rely)
@@ -58,24 +65,25 @@ namespace Assets.Scripts.Minecraft.WorldManage
             return x < 0 || x >= Settings.ChunkSize.x || z < 0 || z >= Settings.ChunkSize.z;
         }
 
-        // TODO
-        public void GenForNow()
+        public static Chunk Load(Vector2Int pos)
         {
-            for (int z = 0; z < Settings.ChunkSize.z; z++)
-                for (int x = 0; x < Settings.ChunkSize.x; x++)
-                    for (int y = 0; y < Settings.ChunkSize.y; y++)
-                        if (Util.ToLin(x, y, z) % 2 == 0)
-                            SetBlock(x, y, z, BlockType.Dirt);
-                        else
-                            SetBlock(x, y, z, BlockType.Air);
+            string path = Settings.saveFolder + pos.ToString() + ".chunk";
+            if (!File.Exists(path))
+                return null;
 
+            Chunk c = JsonUtility.FromJson<Chunk>(File.ReadAllText(path));
+
+            c.Generated = true;
+            foreach (var section in c.sections)
+                section.parent = c;
+
+            //c.HeightMap.SetHeights(c);
+            return c;
         }
-
-        public void ToFile(string path)
+        public void Save()
         {
-            File.WriteAllText(path, "");
-            foreach (var section in sections)
-                section.ToFile(path);
+            if (HasChanged)
+                File.WriteAllText(Settings.saveFolder + Pos.ToString() + ".chunk", JsonUtility.ToJson(this));
         }
 
     }

@@ -305,6 +305,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1337189255}
   - component: {fileID: 1337189254}
+  - component: {fileID: 1337189257}
+  - component: {fileID: 1337189256}
   m_Layer: 0
   m_Name: Global Volume
   m_TagString: Untagged
@@ -343,6 +345,37 @@ Transform:
   m_Father: {fileID: 1267890735}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1337189256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337189253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dff883326f3f2f143b12421c48246940, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waterProfile: {fileID: 1337189257}
+  normalProfile: {fileID: 1337189254}
+--- !u!114 &1337189257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1337189253}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: f3527436946dc98418f24d4faec3c222, type: 2}
 --- !u!1 &1571117683
 GameObject:
   m_ObjectHideFlags: 0
@@ -356,6 +389,7 @@ GameObject:
   - component: {fileID: 1571117688}
   - component: {fileID: 1571117687}
   - component: {fileID: 1571117689}
+  - component: {fileID: 1571117686}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -393,6 +427,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1571117686
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1571117683}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1abdd20ad6801d34aa4e5a6bec090950, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeToMesh:
+  - type: 8
+    mesh: {fileID: -2432090755550338912, guid: 09d3623f6eb8e2048ae08a1608e34c94, type: 3}
+  - type: 9
+    mesh: {fileID: -2432090755550338912, guid: 09d3623f6eb8e2048ae08a1608e34c94, type: 3}
+  - type: 10
+    mesh: {fileID: 274340596381269954, guid: 6bc66a6171cc08e4f8e6add93ec784ff, type: 3}
 --- !u!114 &1571117687
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ namespace Assets.Scripts
     class InfoDisplay : MonoBehaviour
     {
         public Text infoText = null;
+        public HeldItemDisplay heldItem;
 
         BlockType interactedBlock;
         Vector3Int rayCastHit;
@@ -28,13 +29,13 @@ namespace Assets.Scripts
             if (show)
             {
                 var prediction = GameManager.Get.localPlayer.GetComponent<PlayerMovementPrediction>();
-                var input = GameManager.Get.localPlayer.GetComponent<PlayerInput>();
 
                 infoText.text =
                     "FPS: " + (int)(1 / Time.deltaTime) * 2 + "\n" +
                     "Player Position: " + GameManager.Get.localPlayerTransform.position.ToString() + "\n" +
-                    "Player is Flying: " + input.isFlying + "\n" +
-                    "Player is Grounded: " + prediction.isGrounded + "\n\n" +
+                    "Player is Flying: " + prediction.isFlying + "\n" +
+                    "Player is Grounded: " + prediction.isGrounded + "\n" +
+                    "Held Block: " + heldItem.HeldBlock + "\n\n" +
                     "Block Looked at: " + interactedBlock + "\n" +
                     "Position of Block Looked at: " + rayCastHit.ToString();
             }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets;
+using UnityEngine;
 
 /// <summary>Sent from client to server.</summary>
 public enum ClientPackets
@@ -17,7 +18,7 @@ public class PacketSender
         using (Packet _packet = new Packet(ClientPackets.welcomeReceived))
         {
             _packet.Write(Client.Get.myId);
-            _packet.Write("TestName"); // TODO Real Username
+            _packet.Write(Settings.username);
 
             SendTCPData(_packet);
         }
@@ -34,7 +35,7 @@ public class PacketSender
             {
                 _packet.Write(_input);
             }
-            _packet.Write(GameManager.Get.players[Client.Get.myId].transform.rotation);
+            _packet.Write(Camera.main.transform.rotation);
             _packet.Write(data.mWheel);
 
             SendUDPData(_packet);
