@@ -1,4 +1,5 @@
-﻿using Assets.Minecraft;
+﻿using Assets;
+using Assets.Minecraft;
 using Assets.Minecraft.Interactions;
 using System;
 using System.Collections;
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     GameObject worldObject;
+    [SerializeField]
+    GameObject loadingPanel;
 
     [SerializeField]
     GameObject localPlayerPrefab;
@@ -30,6 +33,10 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public PlayerManager localPlayerManager;
 
+    public int ServerTick = 0;
+    public TimeSpan ServerPing;
+
+
     private void Awake()
     {
         if (Get == null)
@@ -46,37 +53,38 @@ public class GameManager : MonoBehaviour
         Client.Get.ConnectToServer();
     }
 
-    private void Update()
+    public void SpawnPlayer(Guid id, string username, Vector3 position, Quaternion rotation)
     {
-    }
-
-    /// <summary>Spawns a player.</summary>
-    /// <param name="_id">The player's ID.</param>
-    /// <param name="_name">The player's name.</param>
-    /// <param name="_position">The player's starting position.</param>
-    /// <param name="_rotation">The player's starting rotation.</param>
-    public void SpawnPlayer(Guid _id, string _username, Vector3 _position, Quaternion _rotation)
-    {
-        GameObject _player;
-        if (_id == Client.Get.myId)
+        GameObject player;
+        if (id == Client.Get.myId)
         {
             // TODO
             Debug.Log("Instantiating Local Player");
-            localPlayer = _player = Instantiate(localPlayerPrefab, _position, _rotation);
+            localPlayer = player = Instantiate(localPlayerPrefab, position, rotation);
             localPlayerManager = localPlayer.GetComponent<PlayerManager>();
             localPlayerTransform = localPlayer.transform;
             worldObject.SetActive(true);
+            localPlayer.SetActive(false);
+            StartCoroutine(DisableLoadingPanel());
         }
         else
         {
             // TODO
             Debug.Log("Instantiating New Player");
-            _player = Instantiate(playerPrefab, _position, _rotation);
+            player = Instantiate(playerPrefab, position, rotation);
         }
 
         // TODO
-        _player.GetComponent<PlayerManager>().Initialize(_id, _username);
-        players.Add(_id, _player.GetComponent<PlayerManager>());
+        player.GetComponent<PlayerManager>().Initialize(id, username);
+        players.Add(id, player.GetComponent<PlayerManager>());
+    }
+
+    IEnumerator DisableLoadingPanel()
+    {
+        yield return new WaitForSeconds(Settings.timeToShowLoadingPanel);
+
+        localPlayer.SetActive(true);
+        loadingPanel.SetActive(false);
     }
 
     public void CreateDroppedBlock(int id, BlockType type, Vector3 pos)

@@ -15,41 +15,41 @@ public class PacketSender
     /// <summary>Lets the server know that the welcome message was received.</summary>
     public static void WelcomeReceived()
     {
-        using (Packet _packet = new Packet(ClientPackets.welcomeReceived))
+        using (Packet packet = new Packet(ClientPackets.welcomeReceived))
         {
-            _packet.Write(Client.Get.myId);
-            _packet.Write(Settings.username);
+            packet.Write(Client.Get.myId);
+            packet.Write(Settings.username);
 
-            SendTCPData(_packet);
+            SendTCPData(packet);
         }
     }
 
     /// <summary>Sends player input to the server.</summary>
-    /// <param name="_inputs"></param>
+    /// <param name="inputs"></param>
     public static void PlayerInput(InputData data)
     {
-        using (Packet _packet = new Packet(ClientPackets.playerInput))
+        using (Packet packet = new Packet(ClientPackets.playerInput))
         {
-            _packet.Write(data.inputs.Length);
-            foreach (bool _input in data.inputs)
+            packet.Write(data.inputs.Length);
+            foreach (bool input in data.inputs)
             {
-                _packet.Write(_input);
+                packet.Write(input);
             }
-            _packet.Write(Camera.main.transform.rotation);
-            _packet.Write(data.mWheel);
+            packet.Write(data.rotation);
+            packet.Write(data.mWheel);
 
-            SendUDPData(_packet);
+            SendUDPData(packet);
         }
     }
 
     public static void PlayerInteract(Vector3 point, bool leftClick)
     {
-        using (Packet _packet = new Packet(ClientPackets.playerInteract))
+        using (Packet packet = new Packet(ClientPackets.playerInteract))
         {
-            _packet.Write(leftClick);
-            _packet.Write(point);
+            packet.Write(leftClick);
+            packet.Write(point);
 
-            SendTCPData(_packet);
+            SendTCPData(packet);
         }
     }
     #endregion
@@ -57,19 +57,19 @@ public class PacketSender
     #region Functionality
 
     /// <summary>Sends a packet to the server via TCP.</summary>
-    /// <param name="_packet">The packet to send to the sever.</param>
-    private static void SendTCPData(Packet _packet)
+    /// <param name="packet">The packet to send to the sever.</param>
+    private static void SendTCPData(Packet packet)
     {
-        _packet.WriteLength();
-        Client.Get.tcp.SendData(_packet);
+        packet.WriteLength();
+        Client.Get.tcp.SendData(packet);
     }
 
     /// <summary>Sends a packet to the server via UDP.</summary>
-    /// <param name="_packet">The packet to send to the sever.</param>
-    private static void SendUDPData(Packet _packet)
+    /// <param name="packet">The packet to send to the sever.</param>
+    private static void SendUDPData(Packet packet)
     {
-        _packet.WriteLength();
-        Client.Get.udp.SendData(_packet);
+        packet.WriteLength();
+        Client.Get.udp.SendData(packet);
     }
 
     #endregion

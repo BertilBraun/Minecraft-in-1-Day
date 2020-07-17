@@ -24,9 +24,10 @@ namespace Assets.Scripts.Minecraft.Player
             return false;
         }
 
-        public static bool Collision(Transform transform, out bool isGrounded)
+        public static bool Collision(Transform transform, out bool isGrounded, out bool isSwimming)
         {
             isGrounded = false;
+            isSwimming = false;
 
             Vector3 min = transform.position - dim / 2;
             Vector3 max = transform.position + dim / 2;
@@ -34,12 +35,18 @@ namespace Assets.Scripts.Minecraft.Player
             for (int x = (int)min.x; x <= (int)max.x; x++)
                 for (int y = (int)(min.y - 0.3f); y <= (int)max.y; y++)
                     for (int z = (int)min.z; z <= (int)max.z; z++)
-                        if (BlockDictionary.Get(World.Get.GetBlock(x, y, z)).Solid)
+                    {
+                        Block block = BlockDictionary.Get(World.Get.GetBlock(x, y, z));
+                        if (block.Fluid)
+                            isSwimming = true;
+                        else if (block.Solid)
                         {
                             if (y == (int)(min.y - 0.3f))
                                 isGrounded = true;
                             return true;
                         }
+                    }
+                        
             return false;
         }
     }

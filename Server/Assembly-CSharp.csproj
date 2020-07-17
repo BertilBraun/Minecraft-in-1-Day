@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\Admin\SerializableDictionary\SerializableDictionary.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\Admin\SerializableDictionary\SerializableHashSet.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Admin\UsernameDatabase.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\Inventory.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\InventoryManager.cs" />
@@ -71,6 +73,8 @@
     <Compile Include="Assets\Scripts\Minecraft\Player\PlayerHandler.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Block.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\WorldManage\BlockEntity.cs" />
+    <Compile Include="Assets\Scripts\Minecraft\WorldManage\BlockEntityManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\Chunk.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\WorldManage\ChunkSection.cs" />

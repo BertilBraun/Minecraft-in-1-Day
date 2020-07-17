@@ -9,7 +9,7 @@ namespace Assets.Scripts
     class InfoDisplay : MonoBehaviour
     {
         public Text infoText = null;
-        public HeldItemDisplay heldItem;
+        public HeldItemDisplay heldItem = null;
 
         BlockType interactedBlock;
         Vector3Int rayCastHit;
@@ -28,14 +28,18 @@ namespace Assets.Scripts
 
             if (show)
             {
-                var prediction = GameManager.Get.localPlayer.GetComponent<PlayerMovementPrediction>();
+                var localPlayer = GameManager.Get.localPlayer;
+                var prediction = localPlayer.GetComponent<PlayerMovementPrediction>();
 
                 infoText.text =
                     "FPS: " + (int)(1 / Time.deltaTime) * 2 + "\n" +
-                    "Player Position: " + GameManager.Get.localPlayerTransform.position.ToString() + "\n" +
+                    "Ping: " + GameManager.Get.ServerPing.TotalMilliseconds + "ms\n" +
+                    "Player Position: " + localPlayer.transform.position.ToString() + "\n" +
+                    "Player Rotation: " + localPlayer.transform.rotation.eulerAngles.ToString() + "\n" +
                     "Player is Flying: " + prediction.isFlying + "\n" +
-                    "Player is Grounded: " + prediction.isGrounded + "\n" +
-                    "Held Block: " + heldItem.HeldBlock + "\n\n" +
+                    "Player is Swimming: " + prediction.isSwimming + "\n" +
+                    "Player is Grounded: " + prediction.isGrounded + "\n\n" +
+                    "Held Block: " + heldItem.HeldBlock + "\n" +
                     "Block Looked at: " + interactedBlock + "\n" +
                     "Position of Block Looked at: " + rayCastHit.ToString();
             }

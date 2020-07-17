@@ -5,6 +5,7 @@ public class InputData
 {
     public bool[] inputs = new bool[8];
     public int mWheel = 0;
+    public Quaternion rotation = Quaternion.identity;
 }
 
 public class PlayerInput : MonoBehaviour
@@ -15,7 +16,7 @@ public class PlayerInput : MonoBehaviour
     private float cameraVerticalRotation;
     private float playerHorizontalRotation;
 
-    InputData data = new InputData();
+    public InputData data = new InputData();
 
     void Start()
     {
@@ -26,6 +27,9 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
+        if (Cursor.lockState == CursorLockMode.Locked)
+            Look();
+
         if (Input.GetKeyDown(KeyCode.F))
             data.inputs[4] = true;
 
@@ -37,9 +41,6 @@ public class PlayerInput : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        if (Cursor.lockState == CursorLockMode.Locked)
-            Look();
-
         data.inputs[0] = Input.GetKey(KeyCode.W);
         data.inputs[1] = Input.GetKey(KeyCode.S);
         data.inputs[2] = Input.GetKey(KeyCode.A);
@@ -49,6 +50,7 @@ public class PlayerInput : MonoBehaviour
         data.inputs[6] = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
         data.inputs[7] = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
+        data.rotation = cameraTransform.rotation;
         PacketSender.PlayerInput(data);
         data = new InputData();
     }

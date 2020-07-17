@@ -78,8 +78,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   username: test
+  inventory:
+    HeldBlock: 0
   movement: {fileID: -974805537165288802}
+  head: {fileID: 9053649895474806011}
   loadDistance: 1
+  mWheelScroll: 0
 --- !u!114 &-974805537165288802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,8 +98,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 6.4
   gravity: -32.27
+  swimmForce: 1.59
   jumpForce: 10.64
   isFlying: 0
+  isSwimming: 0
+  isGrounded: 0
+  yVel: 0
   inputs: 
 --- !u!1 &9053649895474806008
 GameObject:
@@ -107,7 +115,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9053649895474806011}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

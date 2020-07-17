@@ -11,6 +11,8 @@ namespace Assets.Scripts.Minecraft.WorldManage
         [SerializeField]
         Vector3Int pos;
         [SerializeField]
+        BlockEntityManager blockEntityManager;
+        [SerializeField]
         BlockType[] blocks;
 
         [NonSerialized]
@@ -21,6 +23,12 @@ namespace Assets.Scripts.Minecraft.WorldManage
             pos = _pos;
             parent = _parent;
             blocks = new BlockType[Settings.ChunkSectionVolume];
+            blockEntityManager = new BlockEntityManager();
+        }
+
+        public void OnTick(float dt)
+        {
+            blockEntityManager.OnTick(dt);
         }
 
         public BlockType GetBlock(int relx, int rely, int relz)
@@ -49,6 +57,14 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 return;
             }
 
+            if (changeHasChanged)
+            {
+                if (type == BlockType.Air)
+                    blockEntityManager.RemoveIfBlockEntity(relx, rely, relz, GetBlock(relx, rely, relz));
+                else
+                    blockEntityManager.AddIfBlockEntity(relx, rely, relz, type);
+            }
+
             blocks[Util.ToLin(relx, rely, relz)] = type;
             if (changeHasChanged)
                 parent.HasChanged = true;
@@ -57,14 +73,6 @@ namespace Assets.Scripts.Minecraft.WorldManage
         bool OutsideBounds(int x, int z)
         {
             return x < 0 || x >= Settings.ChunkSectionSize.x || z < 0 || z >= Settings.ChunkSectionSize.z;
-        }
-
-        public void ToFile(string path)
-        {
-            string output = "";
-            foreach (BlockType block in blocks)
-                output += (char)block;
-            File.AppendAllText(path, output);
         }
 
         public byte[] Encode()

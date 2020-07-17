@@ -15,6 +15,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         Glass,
         Torch,
         Water,
+        Furnace,
         //Stair,
 
         Count
@@ -37,7 +38,8 @@ namespace Assets.Scripts.Minecraft.WorldManage
                 { BlockType.Plank,  new Block(BlockType.Plank, true) },
                 { BlockType.Glass,  new Block(BlockType.Glass, true) },
                 { BlockType.Torch,  new Block(BlockType.Torch, false) },
-                { BlockType.Water,  new Block(BlockType.Water, false) },
+                { BlockType.Water,  new Block(BlockType.Water, false, true) },
+                { BlockType.Furnace,  new Block(BlockType.Furnace, true) },
                 //{ BlockType.Stair,  new Block(BlockType.Stair, true) },
             };
         }
@@ -54,12 +56,14 @@ namespace Assets.Scripts.Minecraft.WorldManage
     {
         public BlockType Type { get; private set; }
         public bool Solid { get; private set; }
+        public bool Fluid { get; private set; }
 
 
-        public Block(BlockType _type, bool _solid)
+        public Block(BlockType _type, bool _solid, bool _fluid = false)
         {
             Type = _type;
             Solid = _solid;
+            Fluid = _fluid;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,6 +11,7 @@ namespace Assets.Scripts.Menu
     public class MenuManager : MonoBehaviour
     {
         public InputField usernameField;
+        public InputField ipField;
         public Button connectButton;
 
         public GameObject menuChunkPrefab;
@@ -28,10 +30,13 @@ namespace Assets.Scripts.Menu
         private void OnConnect()
         {
             Settings.username = usernameField.text;
-            if (Settings.username != "")
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-            else
+            Settings.ip = ipField.text;
+            if (Settings.username == "")
                 usernameField.ActivateInputField();
+            if (Settings.ip == "" || !IPAddress.TryParse(Settings.ip, out IPAddress _))
+                usernameField.ActivateInputField();
+            else
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
 }
