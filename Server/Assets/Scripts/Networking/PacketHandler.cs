@@ -20,37 +20,37 @@ public class PacketHandler
         { ClientPackets.playerInteract, PlayerInteract }
     };
 
-    public static void WelcomeReceived(Guid _fromClient, Packet _packet)
+    public static void WelcomeReceived(Guid fromClient, Packet packet)
     {
-        Guid _clientIdCheck = _packet.ReadGuid();
-        string _username = _packet.ReadString();
+        Guid clientIdCheck = packet.ReadGuid();
+        string username = packet.ReadString();
 
-        Debug.Log($"{Server.clients[_fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully.");
-        if (_fromClient != _clientIdCheck)
+        Debug.Log($"{Server.clients[fromClient].tcp.socket.Client.RemoteEndPoint} connected successfully.");
+        if (fromClient != clientIdCheck)
         {
-            Debug.Log($"Player \"{_username}\" (ID: {_fromClient}) has assumed the wrong client ID ({_clientIdCheck})!");
+            Debug.Log($"Player \"{username}\" (ID: {fromClient}) has assumed the wrong client ID ({clientIdCheck})!");
         }
-        Server.clients[_fromClient].SendIntoGame(_username);
+        Server.clients[fromClient].SendIntoGame(username);
     }
 
-    public static void PlayerInput(Guid _fromClient, Packet _packet)
+    public static void PlayerInput(Guid fromClient, Packet packet)
     {
-        bool[] _inputs = new bool[_packet.ReadInt()];
-        for (int i = 0; i < _inputs.Length; i++)
+        bool[] inputs = new bool[packet.ReadInt()];
+        for (int i = 0; i < inputs.Length; i++)
         {
-            _inputs[i] = _packet.ReadBool();
+            inputs[i] = packet.ReadBool();
         }
-        Quaternion _rotation = _packet.ReadQuaternion();
-        int mWheelScroll = _packet.ReadInt();
+        Quaternion rotation = packet.ReadQuaternion();
+        int mWheelScroll = packet.ReadInt();
 
-        GameManager.Get.Players[_fromClient].SetInput(_inputs, _rotation, mWheelScroll);
+        GameManager.Get.Players[fromClient].SetInput(inputs, rotation, mWheelScroll);
     }
 
-    public static void PlayerInteract(Guid _fromClient, Packet _packet)
+    public static void PlayerInteract(Guid fromClient, Packet packet)
     {
-        bool leftClick = _packet.ReadBool();
-        Vector3Int interactionPoint = _packet.ReadVector3().ToIntVec();
+        bool leftClick = packet.ReadBool();
+        Vector3Int interactionPoint = packet.ReadVector3().ToIntVec();
 
-        GameManager.Get.Players[_fromClient].Interact(interactionPoint, leftClick);
+        GameManager.Get.Players[fromClient].Interact(interactionPoint, leftClick);
     }
 }

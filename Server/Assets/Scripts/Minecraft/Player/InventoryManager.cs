@@ -28,6 +28,10 @@ namespace Assets.Scripts.Minecraft.Player
                 Input(kv.Key, kv.Value);
         }
 
+        public void AddInventory(PlayerHandler player)
+        {
+            inventories.Add(player, player.inventory);
+        }
         public void PickUp(PlayerHandler player, BlockType type)
         {
             Debug.Log("Picked Up: " + type);
@@ -49,11 +53,6 @@ namespace Assets.Scripts.Minecraft.Player
                     PacketSender.HeldItemChanged(player.id, inv.HeldBlock);
                 player.mWheelScroll = 0;
             }
-        }
-        public Inventory LoadInventory(PlayerHandler player)
-        {
-            inventories.Add(player, new Inventory());
-            return inventories[player];
         }
     }
 }

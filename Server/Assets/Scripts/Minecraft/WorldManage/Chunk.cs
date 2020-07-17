@@ -14,7 +14,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         public Vector2Int Pos;
         [SerializeField]
         public bool Generated;
-        [SerializeField]
+        [NonSerialized]
         public HeightMap HeightMap;
         [SerializeField]
         public ChunkSection[] sections;
@@ -27,6 +27,12 @@ namespace Assets.Scripts.Minecraft.WorldManage
             sections = new ChunkSection[Settings.ChunkSectionsPerChunk];
             for (int i = 0; i < sections.Length; i++)
                 sections[i] = new ChunkSection(new Vector3Int(Pos.x, i, Pos.y), this);
+        }
+
+        public void OnTick(float dt)
+        {
+            foreach (var section in sections)
+                section.OnTick(dt);
         }
 
         public BlockType GetBlock(int relx, int rely, int relz)
@@ -67,7 +73,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
         public static Chunk Load(Vector2Int pos)
         {
-            string path = Settings.saveFolder + pos.ToString() + ".chunk";
+            string path = Settings.chunkSaveFolder + pos.ToString() + ".chunk";
             if (!File.Exists(path))
                 return null;
 
@@ -77,13 +83,14 @@ namespace Assets.Scripts.Minecraft.WorldManage
             foreach (var section in c.sections)
                 section.parent = c;
 
-            //c.HeightMap.SetHeights(c);
+            c.HeightMap = new HeightMap(c.Pos);
+            c.HeightMap.SetHeights(c);
             return c;
         }
         public void Save()
         {
             if (HasChanged)
-                File.WriteAllText(Settings.saveFolder + Pos.ToString() + ".chunk", JsonUtility.ToJson(this));
+                File.WriteAllText(Settings.chunkSaveFolder + Pos.ToString() + ".chunk", JsonUtility.ToJson(this, Settings.beautifyOutput));
         }
 
     }

@@ -3,12 +3,9 @@ using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.WorldManage
 {
-    [Serializable]
     public class HeightMap
     {
-        [SerializeField]
         int[] Map;
-        [SerializeField]
         Vector2Int pos;
 
         public HeightMap(Vector2Int _pos)
@@ -39,6 +36,8 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
         public void SetHeights(Chunk c)
         {
+            Map = new int[Settings.ChunkSize.x * Settings.ChunkSize.z];
+
             for (int z = 0; z < Settings.ChunkSize.z; z++)
                 for (int x = 0; x < Settings.ChunkSize.x; x++)
                     for (int y = Settings.ChunkSize.y - 1; y >= 0; y--)

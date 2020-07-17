@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Menu\LoadingSpinner.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuChunkRenderer.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuManager.cs" />
     <Compile Include="Assets\Scripts\Minecraft\Interactions\BlockInteractor.cs" />

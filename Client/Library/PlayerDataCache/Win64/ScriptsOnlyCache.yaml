@@ -5,19 +5,21 @@ ScriptsOnlyBuild:
     - Assets.Minecraft.ChunkRenderer
     - Assets.Minecraft.Interactions.BlockInteractor
     - Assets.Minecraft.Interactions.DroppedBlock
-    - Assets.Minecraft.Interactions.PickUpCollider
-    - Assets.Minecraft.Interactions.PlayerDig
-    - Assets.Minecraft.Interactions.PlayerPlace
-    - Assets.Minecraft.Items.HeldItemDisplay
-    - Assets.Minecraft.Items.InventoryManager
+    - Assets.Minecraft.Interactions.HeldItemDisplay
+    - Assets.Minecraft.Interactions.PlayerInteract
     - Assets.Minecraft.World
     - Assets.Scripts.InfoDisplay
+    - Assets.Scripts.Menu.LoadingSpinner
+    - Assets.Scripts.Menu.MenuChunkRenderer
+    - Assets.Scripts.Menu.MenuManager
+    - Assets.Scripts.Minecraft.WorldManage.BlockMeshingManager
+    - Assets.Scripts.Minecraft.WorldManage.ChunkRenderManager
+    - Assets.Scripts.Player.PlayerMovementPrediction
+    - Assets.Scripts.Player.WaterPostProcessing
     - Client
     - GameManager
-    - PlayerController
+    - PlayerInput
     - PlayerManager
-    - Player_Look
-    - Player_Movement
     - ThreadManager
     Unity.RenderPipelines.Core.Runtime.dll:
     - UnityEngine.Rendering.UI.DebugUIHandlerBitField
@@ -51,6 +53,7 @@ ScriptsOnlyBuild:
     - UnityEditor.Rendering.Universal.UniversalProjectSettings
     Unity.RenderPipelines.Universal.Runtime.dll:
     - UnityEngine.Rendering.Universal.ColorAdjustments
+    - UnityEngine.Rendering.Universal.DepthOfField
     - UnityEngine.Rendering.Universal.ForwardRendererData
     - UnityEngine.Rendering.Universal.PostProcessData
     - UnityEngine.Rendering.Universal.Tonemapping
@@ -65,12 +68,15 @@ ScriptsOnlyBuild:
     - UnityEditor.TestTools.TestRunner.TestListCacheData
     - UnityEditor.TestTools.TestRunner.TestRun.TestJobDataHolder
     UnityEngine.UI.dll:
+    - UnityEngine.EventSystems.EventSystem
+    - UnityEngine.EventSystems.StandaloneInputModule
     - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.ContentSizeFitter
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.HorizontalLayoutGroup
     - UnityEngine.UI.Image
+    - UnityEngine.UI.InputField
     - UnityEngine.UI.LayoutElement
     - UnityEngine.UI.Mask
     - UnityEngine.UI.ScrollRect
@@ -79,6 +85,133 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.Toggle
     - UnityEngine.UI.VerticalLayoutGroup
   sceneClasses:
+    Assets/Scenes/Menu Scene.unity:
+    - Class: 1
+      Script: {instanceID: 0}
+    - Class: 4
+      Script: {instanceID: 0}
+    - Class: 20
+      Script: {instanceID: 0}
+    - Class: 21
+      Script: {instanceID: 0}
+    - Class: 23
+      Script: {instanceID: 0}
+    - Class: 28
+      Script: {instanceID: 0}
+    - Class: 33
+      Script: {instanceID: 0}
+    - Class: 48
+      Script: {instanceID: 0}
+    - Class: 81
+      Script: {instanceID: 0}
+    - Class: 104
+      Script: {instanceID: 0}
+    - Class: 108
+      Script: {instanceID: 0}
+    - Class: 114
+      Script: {instanceID: 11270}
+    - Class: 114
+      Script: {instanceID: 11272}
+    - Class: 114
+      Script: {instanceID: 11274}
+    - Class: 114
+      Script: {instanceID: 11276}
+    - Class: 114
+      Script: {instanceID: 11278}
+    - Class: 114
+      Script: {instanceID: 11280}
+    - Class: 114
+      Script: {instanceID: 11282}
+    - Class: 114
+      Script: {instanceID: 11416}
+    - Class: 114
+      Script: {instanceID: 11520}
+    - Class: 114
+      Script: {instanceID: 11542}
+    - Class: 114
+      Script: {instanceID: 11708}
+    - Class: 114
+      Script: {instanceID: 11746}
+    - Class: 114
+      Script: {instanceID: 11906}
+    - Class: 114
+      Script: {instanceID: 12202}
+    - Class: 114
+      Script: {instanceID: 12244}
+    - Class: 114
+      Script: {instanceID: 12302}
+    - Class: 114
+      Script: {instanceID: 12420}
+    - Class: 114
+      Script: {instanceID: 12528}
+    - Class: 114
+      Script: {instanceID: 12724}
+    - Class: 114
+      Script: {instanceID: 12764}
+    - Class: 114
+      Script: {instanceID: 12820}
+    - Class: 114
+      Script: {instanceID: 12916}
+    - Class: 114
+      Script: {instanceID: 13082}
+    - Class: 114
+      Script: {instanceID: 13178}
+    - Class: 114
+      Script: {instanceID: 13204}
+    - Class: 114
+      Script: {instanceID: 13476}
+    - Class: 114
+      Script: {instanceID: 13500}
+    - Class: 114
+      Script: {instanceID: 13542}
+    - Class: 114
+      Script: {instanceID: 13562}
+    - Class: 114
+      Script: {instanceID: 13686}
+    - Class: 114
+      Script: {instanceID: 13714}
+    - Class: 114
+      Script: {instanceID: 13722}
+    - Class: 114
+      Script: {instanceID: 14018}
+    - Class: 114
+      Script: {instanceID: 14082}
+    - Class: 114
+      Script: {instanceID: 14304}
+    - Class: 114
+      Script: {instanceID: 14484}
+    - Class: 114
+      Script: {instanceID: 14528}
+    - Class: 114
+      Script: {instanceID: 14638}
+    - Class: 114
+      Script: {instanceID: 14720}
+    - Class: 114
+      Script: {instanceID: 14722}
+    - Class: 114
+      Script: {instanceID: 14750}
+    - Class: 114
+      Script: {instanceID: 14770}
+    - Class: 114
+      Script: {instanceID: 14882}
+    - Class: 114
+      Script: {instanceID: 14888}
+    - Class: 115
+      Script: {instanceID: 0}
+    - Class: 128
+      Script: {instanceID: 0}
+    - Class: 157
+      Script: {instanceID: 0}
+    - Class: 196
+      Script: {instanceID: 0}
+    - Class: 213
+      Script: {instanceID: 0}
+    - Class: 222
+      Script: {instanceID: 0}
+    - Class: 223
+      Script: {instanceID: 0}
+    - Class: 224
+      Script: {instanceID: 0}
     Assets/Scenes/Play Scene.unity:
     - Class: 1
       Script: {instanceID: 0}
@@ -98,10 +231,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
-    - Class: 54
-      Script: {instanceID: 0}
-    - Class: 65
-      Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
     - Class: 104
@@ -109,43 +238,23 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 11264}
-    - Class: 114
-      Script: {instanceID: 11266}
-    - Class: 114
-      Script: {instanceID: 11268}
-    - Class: 114
-      Script: {instanceID: 11270}
-    - Class: 114
-      Script: {instanceID: 11272}
-    - Class: 114
       Script: {instanceID: 11274}
     - Class: 114
       Script: {instanceID: 11276}
     - Class: 114
-      Script: {instanceID: 11352}
+      Script: {instanceID: 11282}
     - Class: 114
-      Script: {instanceID: 11404}
+      Script: {instanceID: 11358}
     - Class: 114
-      Script: {instanceID: 11412}
+      Script: {instanceID: 11532}
     - Class: 114
-      Script: {instanceID: 11518}
+      Script: {instanceID: 11684}
     - Class: 114
-      Script: {instanceID: 11530}
+      Script: {instanceID: 11708}
     - Class: 114
-      Script: {instanceID: 11540}
+      Script: {instanceID: 11780}
     - Class: 114
-      Script: {instanceID: 11682}
-    - Class: 114
-      Script: {instanceID: 11706}
-    - Class: 114
-      Script: {instanceID: 11744}
-    - Class: 114
-      Script: {instanceID: 11802}
-    - Class: 114
-      Script: {instanceID: 11868}
-    - Class: 114
-      Script: {instanceID: 11906}
+      Script: {instanceID: 12004}
     - Class: 114
       Script: {instanceID: 12040}
     - Class: 114
@@ -153,90 +262,42 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12202}
     - Class: 114
-      Script: {instanceID: 12244}
-    - Class: 114
-      Script: {instanceID: 12302}
-    - Class: 114
       Script: {instanceID: 12318}
     - Class: 114
       Script: {instanceID: 12518}
     - Class: 114
-      Script: {instanceID: 12528}
-    - Class: 114
-      Script: {instanceID: 12724}
-    - Class: 114
-      Script: {instanceID: 12764}
-    - Class: 114
-      Script: {instanceID: 12820}
-    - Class: 114
       Script: {instanceID: 12834}
-    - Class: 114
-      Script: {instanceID: 12916}
     - Class: 114
       Script: {instanceID: 12962}
     - Class: 114
-      Script: {instanceID: 13036}
+      Script: {instanceID: 13050}
     - Class: 114
       Script: {instanceID: 13152}
     - Class: 114
-      Script: {instanceID: 13178}
-    - Class: 114
-      Script: {instanceID: 13204}
-    - Class: 114
-      Script: {instanceID: 13456}
-    - Class: 114
-      Script: {instanceID: 13474}
+      Script: {instanceID: 13458}
     - Class: 114
       Script: {instanceID: 13482}
     - Class: 114
-      Script: {instanceID: 13498}
+      Script: {instanceID: 13486}
     - Class: 114
-      Script: {instanceID: 13538}
+      Script: {instanceID: 13502}
     - Class: 114
-      Script: {instanceID: 13558}
-    - Class: 114
-      Script: {instanceID: 13564}
-    - Class: 114
-      Script: {instanceID: 13682}
-    - Class: 114
-      Script: {instanceID: 13710}
-    - Class: 114
-      Script: {instanceID: 13718}
-    - Class: 114
-      Script: {instanceID: 13734}
+      Script: {instanceID: 13568}
     - Class: 114
       Script: {instanceID: 13764}
     - Class: 114
-      Script: {instanceID: 13944}
-    - Class: 114
-      Script: {instanceID: 14016}
-    - Class: 114
-      Script: {instanceID: 14080}
-    - Class: 114
-      Script: {instanceID: 14302}
+      Script: {instanceID: 13946}
     - Class: 114
       Script: {instanceID: 14392}
     - Class: 114
-      Script: {instanceID: 14484}
-    - Class: 114
-      Script: {instanceID: 14528}
-    - Class: 114
-      Script: {instanceID: 14718}
-    - Class: 114
-      Script: {instanceID: 14720}
-    - Class: 114
-      Script: {instanceID: 14770}
+      Script: {instanceID: 14424}
     - Class: 114
       Script: {instanceID: 14866}
     - Class: 114
-      Script: {instanceID: 14882}
-    - Class: 114
-      Script: {instanceID: 14888}
+      Script: {instanceID: 16866}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
-      Script: {instanceID: 0}
-    - Class: 136
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
@@ -319,12 +380,6 @@ ScriptsOnlyBuild:
     className: TMP_Dropdown
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: Assets.Minecraft.Items
-    className: InventoryManager
-  - hash:
-      serializedVersion: 2
       Hash: b7d58df3c6d92c60e3611c0a808aa0dc
     assemblyName: Unity.RenderPipelines.Core.Runtime.dll
     namespaceName: UnityEngine.Rendering.UI
@@ -349,7 +404,7 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerPersistentCanvas
   - hash:
       serializedVersion: 2
-      Hash: f3f28885be0cae1fa67b26eb0c1a608d
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: Assets.Minecraft
     className: World
@@ -403,7 +458,7 @@ ScriptsOnlyBuild:
     className: TouchInputModule
   - hash:
       serializedVersion: 2
-      Hash: fa1f21e6e7305e9e1fec86912d828f54
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: Assets.Minecraft
     className: ChunkManager
@@ -439,10 +494,10 @@ ScriptsOnlyBuild:
     className: TMP_InputField
   - hash:
       serializedVersion: 2
-      Hash: d925f50a3383d8059d64aeea2bba9d93
+      Hash: 69425b5c5ebe8b3822bdd0ec25ed4521
     assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Player_Movement
+    namespaceName: Assets.Scripts.Player
+    className: WaterPostProcessing
   - hash:
       serializedVersion: 2
       Hash: 7ab0e790220bdca831fdd886b339039d
@@ -451,22 +506,10 @@ ScriptsOnlyBuild:
     className: GridLayoutGroup
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PackageSender
-  - hash:
-      serializedVersion: 2
       Hash: 54d8f12780f7f6df9b0603e66c9a5b3b
     assemblyName: Unity.RenderPipelines.Universal.Runtime.dll
     namespaceName: UnityEngine.Rendering.Universal
     className: ColorCurves
-  - hash:
-      serializedVersion: 2
-      Hash: 5d843d99e5f0cba3225920724de1e9e2
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: Assets.Minecraft.Interactions
-    className: PlayerPlace
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -493,6 +536,12 @@ ScriptsOnlyBuild:
     className: AnimationTrack
   - hash:
       serializedVersion: 2
+      Hash: 23888f48900e6f0b1460423ec4b74a82
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Assets.Scripts.Player
+    className: PlayerMovementPrediction
+  - hash:
+      serializedVersion: 2
       Hash: cf9f5cf2c3145a37ac07f00e50e460f9
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -511,7 +560,7 @@ ScriptsOnlyBuild:
     className: CameraSwitcher
   - hash:
       serializedVersion: 2
-      Hash: ef8954989fc57f2d055504f23f9935db
+      Hash: 7c7baf9331ea9254a5ae4a77eff40510
     assemblyName: Assembly-CSharp.dll
     namespaceName: Assets.Minecraft.Interactions
     className: BlockInteractor
@@ -577,7 +626,7 @@ ScriptsOnlyBuild:
     className: UIFoldout
   - hash:
       serializedVersion: 2
-      Hash: f61bc5a0d59ea695ad474d2ae5bda88d
+      Hash: d65c2b1dd78ce6ad2e846a1e95bbde0e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerManager
@@ -661,10 +710,10 @@ ScriptsOnlyBuild:
     className: ScrollRect
   - hash:
       serializedVersion: 2
-      Hash: 6177a2f89b36d53e7c1656c459c26d1f
+      Hash: af32dd51980256d5aad538f0156a4538
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: PlayerController
+    className: PlayerInput
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -685,7 +734,7 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerToggleHistory
   - hash:
       serializedVersion: 2
-      Hash: 073502e91c946cb646bd812f638fc294
+      Hash: 890845f21e863194807f6c2169d3bdb3
     assemblyName: Assembly-CSharp.dll
     namespaceName: Assets.Scripts
     className: InfoDisplay
@@ -697,16 +746,22 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 9435300cdb32da40f2a23f8bb0541d6f
+      Hash: 7e758af614958208a98b59e89edd6446
     assemblyName: Assembly-CSharp.dll
-    namespaceName: Assets.Minecraft.Interactions
-    className: PickUpCollider
+    namespaceName: Assets.Scripts.Minecraft.WorldManage
+    className: ChunkRenderManager
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: RemoteTestResultSender
+  - hash:
+      serializedVersion: 2
+      Hash: 6009b126906cb7a5a8c68560366177f0
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Assets.Scripts.Menu
+    className: MenuChunkRenderer
   - hash:
       serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
@@ -757,12 +812,6 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerWidget
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PackageHandler
-  - hash:
-      serializedVersion: 2
       Hash: f050e4ebd311386367bb1906f9218b01
     assemblyName: Unity.RenderPipelines.Universal.Runtime.dll
     namespaceName: UnityEngine.Rendering.Universal
@@ -775,16 +824,22 @@ ScriptsOnlyBuild:
     className: MotionBlur
   - hash:
       serializedVersion: 2
-      Hash: 6d39aec669c7cadcbc9e6658b5ce7898
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: Assets.Minecraft.Interactions
-    className: PlayerDig
+    className: PlayerInteract
   - hash:
       serializedVersion: 2
       Hash: 36025d42bf23fda83a55bf1429201821
     assemblyName: Unity.RenderPipelines.Core.Runtime.dll
     namespaceName: UnityEngine.Rendering.UI
     className: DebugUIHandlerFoldout
+  - hash:
+      serializedVersion: 2
+      Hash: 291e56f71b081afbb5f0d3143abdc7cd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Assets.Scripts.Minecraft.WorldManage
+    className: BlockMeshingManager
   - hash:
       serializedVersion: 2
       Hash: 9db6d39cbb0ddd4d5583b39e9bfc4119
@@ -799,7 +854,7 @@ ScriptsOnlyBuild:
     className: InputField
   - hash:
       serializedVersion: 2
-      Hash: 8c88ad6864ef1599d51dad8f92add2a2
+      Hash: b845a22627f3b3adf8a9499fe0311126
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -829,9 +884,9 @@ ScriptsOnlyBuild:
     className: DebugUIHandlerColor
   - hash:
       serializedVersion: 2
-      Hash: 5c0880dfab6b0790ce0d0ccd3dac0c3f
+      Hash: e2406ebfa58c8ea6b262ee14be3e231d
     assemblyName: Assembly-CSharp.dll
-    namespaceName: Assets.Minecraft.Items
+    namespaceName: Assets.Minecraft.Interactions
     className: HeldItemDisplay
   - hash:
       serializedVersion: 2
@@ -887,12 +942,6 @@ ScriptsOnlyBuild:
     assemblyName: Unity.RenderPipelines.Core.Runtime.dll
     namespaceName: UnityEngine.Rendering.UI
     className: DebugUIHandlerButton
-  - hash:
-      serializedVersion: 2
-      Hash: b4e7b44253dbe20100a880a8a8b131d5
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: Player_Look
   - hash:
       serializedVersion: 2
       Hash: 597cfde2e60b842b3acbd2961ff0631b
@@ -1051,6 +1100,12 @@ ScriptsOnlyBuild:
     className: BaseInput
   - hash:
       serializedVersion: 2
+      Hash: c52bb47e32b52636deca3ca0aedf8e69
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Assets.Scripts.Menu
+    className: MenuManager
+  - hash:
+      serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -1175,8 +1230,15 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: PlayableTrack
+  - hash:
+      serializedVersion: 2
+      Hash: afc5b93a7b192de2dcb3832fe35a5c7e
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: Assets.Scripts.Menu
+    className: LoadingSpinner
   platform: 19
   scenePathNames:
+  - Assets/Scenes/Menu Scene.unity
   - Assets/Scenes/Play Scene.unity
-  playerPath: C:/Users/Braun/Google Drive/Projects/Minecraft Multiplayer/Client/Build/Windows/Minecraft
+  playerPath: C:/Users/Braun/OneDrive/Desktop/Minecraft Multiplayer/Client/Build/Minecraft
     in 1 Day.exe

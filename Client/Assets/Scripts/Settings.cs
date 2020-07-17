@@ -5,6 +5,11 @@ namespace Assets
     class Settings
     {
         public static string username = "Debug";
+        public static string ip = "127.0.0.1";
+
+        public static float timeToShowLoadingPanel = 0f; // TODO increase to like 3s
+
+        public static float DistanceToSyncPlayerPositionFrom = 0.5f;
 
         public static float TexturesPerRow = 16;
         public static float BlockTextureSize = 16;

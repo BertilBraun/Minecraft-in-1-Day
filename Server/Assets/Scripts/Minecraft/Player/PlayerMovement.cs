@@ -8,9 +8,11 @@ namespace Assets.Scripts.Minecraft.Player
     {
         public float speed = 8f;
         public float gravity = -9.81f;
+        public float swimmForce = 1f;
         public float jumpForce = 1.5f;
 
         public bool isFlying = false;
+        public bool isSwimming = false;
         public bool isGrounded = false;
         public float yVel = 0f;
 
@@ -26,6 +28,7 @@ namespace Assets.Scripts.Minecraft.Player
         {
             gravity *= Time.fixedDeltaTime * Time.fixedDeltaTime;
             speed *= Time.fixedDeltaTime;
+            swimmForce *= Time.fixedDeltaTime;
             jumpForce *= Time.fixedDeltaTime;
 
             inputs = new bool[8];
@@ -50,7 +53,6 @@ namespace Assets.Scripts.Minecraft.Player
                 inputDirection.x -= 1;
             if (inputs[3])
                 inputDirection.x += 1;
-
 
             if (isFlying)
                 UpdateFlying(inputDirection);
@@ -77,28 +79,39 @@ namespace Assets.Scripts.Minecraft.Player
 
         void UpdateWalking(Vector2 inputDirection)
         {
-            yVel += gravity;
+            if (isSwimming)
+                yVel += gravity / 2f;
+            else
+                yVel += gravity;
+
             if (isGrounded && inputs[5])
                 yVel = jumpForce;
+
+            if (isSwimming && inputs[5])
+                yVel += swimmForce;
 
             Vector3 updateVel = (transform.right * inputDirection.x + transform.forward * inputDirection.y * (inputs[6] ? 1.5f : 1f)) * speed;
 
             updateVel += new Vector3(0f, yVel, 0f);
 
+            isSwimming = false;
             transform.position += new Vector3(0, updateVel.y, 0);
-            if (PlayerCollider.Collision(transform, out isGrounded))
+            if (PlayerCollider.Collision(transform, out isGrounded, out bool swimming))
             {
                 transform.position -= new Vector3(0, updateVel.y, 0);
                 yVel = -2f * Time.fixedDeltaTime;
             }
+            isSwimming |= swimming;
 
             transform.position += new Vector3(updateVel.x, 0, 0);
-            if (PlayerCollider.Collision(transform, out bool _))
+            if (PlayerCollider.Collision(transform, out bool _, out swimming))
                 transform.position -= new Vector3(updateVel.x, 0, 0);
+            isSwimming |= swimming;
 
             transform.position += new Vector3(0, 0, updateVel.z);
-            if (PlayerCollider.Collision(transform, out bool _))
+            if (PlayerCollider.Collision(transform, out bool _, out swimming))
                 transform.position -= new Vector3(0, 0, updateVel.z);
+            isSwimming |= swimming;
         }
     }
 }

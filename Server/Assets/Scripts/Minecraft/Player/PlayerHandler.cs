@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Minecraft.WorldManage;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Minecraft.Player
@@ -11,6 +12,7 @@ namespace Assets.Scripts.Minecraft.Player
 
         public Inventory inventory;
         public PlayerMovement movement;
+        public Transform head;
 
         public int loadDistance = 1;
         public int mWheelScroll;
@@ -19,7 +21,7 @@ namespace Assets.Scripts.Minecraft.Player
         {
             id = _id;
             username = _username;
-            inventory = InventoryManager.Get.LoadInventory(this);
+            inventory = new Inventory(0);
             movement.Init(id);
         }
 
@@ -29,14 +31,15 @@ namespace Assets.Scripts.Minecraft.Player
         public void SetInput(bool[] _inputs, Quaternion _rotation, int _mWheelScroll)
         {
             movement.SetInput(_inputs);
-            transform.rotation = _rotation;
+            head.rotation = _rotation;
+            transform.rotation = Quaternion.Euler(0, _rotation.eulerAngles.y, 0);
             mWheelScroll = _mWheelScroll;
         }
 
         // TODO Future, Do raycast on server instead of client side
         public void Interact(Vector3Int point, bool leftClick)
         {
-            if ((transform.position - point).sqrMagnitude > Settings.DigDistance * Settings.DigDistance)
+            if ((head.position - point).sqrMagnitude > Settings.DigDistance * Settings.DigDistance)
             {
                 Debug.Log("To far away to Interact");
                 return;

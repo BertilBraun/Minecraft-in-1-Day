@@ -1,5 +1,7 @@
 ﻿using Assets.Scripts.Minecraft.Player;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 
@@ -7,11 +9,16 @@ namespace Assets.Scripts.Minecraft.WorldManage
 {
     public class ChunkManager : MonoBehaviour
     {
-        Dictionary<Vector2Int, Chunk> dict;
+        public static ChunkManager Get;
+
+        Dictionary<Vector2Int, Chunk> loadedChunks;
+        Dictionary<Guid, List<Vector2Int>> loadedChunksPerUser;
 
         void Start()
         {
-            dict = new Dictionary<Vector2Int, Chunk>();
+            Get = this;
+            loadedChunks = new Dictionary<Vector2Int, Chunk>();
+            loadedChunksPerUser = new Dictionary<Guid, List<Vector2Int>>();
         }
 
         public void Update()
@@ -22,9 +29,15 @@ namespace Assets.Scripts.Minecraft.WorldManage
             RemoveChunks();
         }
 
+        private void FixedUpdate()
+        {
+            foreach (var c in loadedChunks.Values)
+                c.OnTick(Time.fixedDeltaTime);
+        }
+
         private void OnApplicationQuit()
         {
-            foreach (Chunk chunk in dict.Values)
+            foreach (Chunk chunk in loadedChunks.Values)
                 chunk.Save();
         }
 
@@ -45,16 +58,24 @@ namespace Assets.Scripts.Minecraft.WorldManage
             for (int i = 0; i < player.loadDistance; i++)
                 for (int x = cam.x - i; x <= cam.x + i; x++)
                     for (int z = cam.y - i; z <= cam.y + i; z++)
-                        if (!GetChunk(x, z).Generated)
+                    {
+                        Vector2Int pos = new Vector2Int(x, z);
+                        if (!loadedChunksPerUser[player.id].Contains(pos))
                         {
-                            Chunk c = Chunk.Load(new Vector2Int(x, z));
-                            if (c == null)
-                                c = World.Get.GenerateChunk(x, z);
-                            else
-                                AddChunk(c);
+                            Chunk c = GetChunk(x, z);
+                            if (!c.Generated)
+                            {
+                                c = Chunk.Load(new Vector2Int(x, z));
+                                if (c == null)
+                                    c = World.Get.GenerateChunk(x, z);
+                                else
+                                    AddChunk(c);
+                            }
                             PacketSender.ChunkSend(player.id, c);
+                            loadedChunksPerUser[player.id].Add(pos);
                             return;
                         }
+                    }
 
             player.loadDistance++;
             if (player.loadDistance >= Settings.RenderDistance)
@@ -64,7 +85,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
         void RemoveChunks()
         {
             List<Vector2Int> toDestroy = new List<Vector2Int>();
-            foreach (Vector2Int chunkPos in dict.Keys)
+            foreach (Vector2Int chunkPos in loadedChunks.Keys)
             {
                 bool delete = true;
                 foreach (PlayerHandler player in GameManager.Get.Players.Values)
@@ -79,27 +100,38 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
             foreach (Vector2Int key in toDestroy)
             {
-                dict[key].Save();
-                dict.Remove(key);
+                foreach (var list in loadedChunksPerUser.Values)
+                    list.Remove(key);
+
+                loadedChunks[key].Save();
+                loadedChunks.Remove(key);
             }
         }
 
+        public void AddPlayer(PlayerHandler player)
+        {
+            loadedChunksPerUser[player.id] = new List<Vector2Int>();
+        }
+        public void RemovePlayer(PlayerHandler player)
+        {
+            loadedChunksPerUser.Remove(player.id);
+        }
         public Chunk AddChunk(int x, int z)
         {
             var key = new Vector2Int(x, z);
 
             if (ChunkExists(x, z))
-                return dict[key];
+                return loadedChunks[key];
 
             Chunk chunk = new Chunk(key);
 
-            dict.Add(key, chunk);
+            loadedChunks.Add(key, chunk);
             return chunk;
         }
 
         public void AddChunk(Chunk c)
         {
-            dict[c.Pos] = c;
+            loadedChunks[c.Pos] = c;
         }
 
         public Chunk GetChunk(int chunkx, int chunkz)
@@ -109,7 +141,7 @@ namespace Assets.Scripts.Minecraft.WorldManage
 
         public bool ChunkExists(int cx, int cz)
         {
-            return dict.ContainsKey(new Vector2Int(cx, cz));
+            return loadedChunks.ContainsKey(new Vector2Int(cx, cz));
         }
 
         public void UpdateChunk(int x, int y, int z, BlockType type)

@@ -22,6 +22,7 @@ namespace Assets.Minecraft
         Glass,
         Torch,
         Water,
+        Furnace,
         //Stair,
 
         Count
@@ -45,6 +46,7 @@ namespace Assets.Minecraft
                 { BlockType.Glass,  new CodeMeshedBlock(BlockType.Glass, MeshOrder.World, 49, true, false) },
                 { BlockType.Torch,  new LoadedMeshBlock(BlockType.Torch, MeshOrder.World, false, false) },
                 { BlockType.Water,  new CodeFluidMeshedBlock(BlockType.Water, 206, false, false) },
+                { BlockType.Furnace,new CodeMeshedBlock(BlockType.Furnace, MeshOrder.World, 45, 45, 44, true, true) },
                 //{ BlockType.Stair,  new LoadedMeshBlock(BlockType.Stair, MeshOrder.World, true, true) },
             };
         }
